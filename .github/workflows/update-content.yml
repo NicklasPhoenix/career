@@ -1,0 +1,48 @@
+name: Weekly Content Update
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Every Monday at midnight
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Update Last Modified Dates
+        run: |
+          # Update dates in HTML files
+          find . -name "*.html" -type f -exec sed -i "s/dateModified\": \".*\"/dateModified\": \"$(date +%Y-%m-%d)\"/" {} \;
+          
+      - name: Rotate Featured Content
+        run: |
+          # Randomly shuffle which articles are featured
+          # This makes the site look active to Google
+          echo "Future implementation: Rotate featured content in blog index and homepage"
+          
+      - name: Update Statistics
+        run: |
+          # Update any year references to current year
+          find . -name "*.html" -type f -exec sed -i "s/2024/2025/g" {} \;
+          
+      - name: Generate New Sitemap
+        run: |
+          # Create updated sitemap.xml with all pages
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
+          echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
+          find . -name "*.html" -type f | while read file; do
+            echo "  <url>" >> sitemap.xml
+            echo "    <loc>https://nicklasphoenix.github.io/career${file#.}</loc>" >> sitemap.xml
+            echo "    <lastmod>$(date +%Y-%m-%d)</lastmod>" >> sitemap.xml
+            echo "  </url>" >> sitemap.xml
+          done
+          echo '</urlset>' >> sitemap.xml
+          
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add .
+          git commit -m "Weekly content update - $(date +%Y-%m-%d)" || echo "No changes to commit"
+          git push

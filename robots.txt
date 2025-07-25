@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://nicklasphoenix.github.io/career/sitemap.xml
+
+# Disallow crawling of admin pages
+Disallow: /admin/
+Disallow: /cgi-bin/

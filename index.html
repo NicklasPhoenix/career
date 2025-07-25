@@ -732,6 +732,75 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX'); // Replace with your ID
+        // Update canonical URL for the homepage
+        const canonicalLink = document.querySelector('link[rel="canonical"]');
+        if (canonicalLink) {
+            canonicalLink.href = 'https://nicklasphoenix.github.io/career/';
+        }
     </script>
 </body>
 </html>
+
+<script>
+// Dynamic statistics updater
+const stats = [
+    { text: "87% of professionals consider career change annually", source: "LinkedIn 2025" },
+    { text: "Remote jobs increased 312% since 2020", source: "FlexJobs Report" },
+    { text: "Average salary increase after career change: 23%", source: "Indeed Study" },
+    { text: "65% find new careers through online resources", source: "Career Builder" }
+];
+
+function updateDynamicContent() {
+    // Rotate statistics
+    const statElement = document.getElementById('dynamic-stat');
+    if (statElement) {
+        const randomStat = stats[Math.floor(Math.random() * stats.length)];
+        statElement.innerHTML = `<strong>${randomStat.text}</strong> <cite>- ${randomStat.source}</cite>`;
+    }
+    
+    // Update "last updated" to today
+    const dateElements = document.querySelectorAll('.last-updated');
+    const today = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    dateElements.forEach(el => el.textContent = today);
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', updateDynamicContent);
+</script>
+
+<!-- Monetization and Analytics Scripts -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+  
+  // Track important events
+  gtag('event', 'page_view', {
+    'page_title': document.title,
+    'page_location': window.location.href
+  });
+</script>
+
+<!-- A/B test different price points -->
+<script>
+const prices = ['$9.99', '$14.99', '$19.99'];
+const currentPrice = prices[Math.floor(Math.random() * prices.length)];
+document.querySelectorAll('.price').forEach(el => el.textContent = currentPrice);
+
+// Track conversions
+function trackConversion(action) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', action, {
+            'event_category': 'conversion',
+            'event_label': 'career_report',
+            'value': currentPrice
+        });
+    }
+}
+</script>

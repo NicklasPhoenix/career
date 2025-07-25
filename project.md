@@ -11,7 +11,7 @@
 ## Site Architecture for Maximum SEO
 
 ```
-yourusername.github.io/
+nicklasphoenix.github.io/career/
 ├── index.html (Career Tool + SEO content)
 ├── blog/
 │   ├── index.html (Blog listing page)
@@ -48,13 +48,13 @@ yourusername.github.io/
     <title>Primary Keyword - Secondary Keyword | Your Brand</title>
     <meta name="description" content="Action-oriented description with primary keyword in first 160 characters">
     <meta name="keywords" content="career change, career transition, find new career">
-    <link rel="canonical" href="https://yourusername.github.io/current-page">
+    <link rel="canonical" href="https://nicklasphoenix.github.io/career/current-page">
     
     <!-- Open Graph for Social Sharing -->
     <meta property="og:title" content="Your Title">
     <meta property="og:description" content="Description for social media">
     <meta property="og:image" content="https://yourusername.github.io/images/og-image.jpg">
-    <meta property="og:url" content="https://yourusername.github.io/current-page">
+    <meta property="og:url" content="https://nicklasphoenix.github.io/career/current-page">
     
     <!-- Schema Markup for Rich Snippets -->
     <script type="application/ld+json">
@@ -67,19 +67,19 @@ yourusername.github.io/
       "author": {
         "@type": "Person",
         "name": "Your Name",
-        "url": "https://yourusername.github.io/about"
+        "url": "https://nicklasphoenix.github.io/career/about"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Your Career Site",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://yourusername.github.io/logo.png"
+          "url": "https://nicklasphoenix.github.io/career/logo.png"
         }
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://yourusername.github.io/current-page"
+        "@id": "https://nicklasphoenix.github.io/career/current-page"
       }
     }
     </script>
@@ -264,7 +264,7 @@ jobs:
           echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
           find . -name "*.html" -type f | while read file; do
             echo "  <url>" >> sitemap.xml
-            echo "    <loc>https://yourusername.github.io${file#.}</loc>" >> sitemap.xml
+            echo "    <loc>https://nicklasphoenix.github.io/career${file#.}</loc>" >> sitemap.xml
             echo "    <lastmod>$(date +%Y-%m-%d)</lastmod>" >> sitemap.xml
             echo "  </url>" >> sitemap.xml
           done
@@ -431,7 +431,7 @@ function trackConversion(action) {
 
 ```bash
 # Clone your repository
-git clone https://github.com/yourusername/yourusername.github.io.git
+git clone https://github.com/nicklasphoenix/nicklasphoenix.github.io.git
 
 # Add all files
 git add .
@@ -443,7 +443,7 @@ git commit -m "Add career analyzer tool"
 git push origin main
 
 # Your site will be live at:
-# https://yourusername.github.io
+# https://nicklasphoenix.github.io/career
 ```
 
 ---
