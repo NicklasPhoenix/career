@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', updateDynamicContent);
 1. **Gumroad** (Easiest)
    - Create product at gumroad.com
    - Get your product link
-   - Replace payment buttons with: `window.location.href = 'https://gum.co/yourproduct'`
+   - Replace payment buttons with: `window.location.href = '(https://sheepernick.gumroad.com/l/nsqbp)`
 
 2. **Stripe Payment Links** (Professional)
    - Create payment link in Stripe Dashboard
