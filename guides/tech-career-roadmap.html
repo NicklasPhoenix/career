@@ -43,24 +43,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Career Roadmap: Your Path to Success in Tech</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: #f4f4f4; padding: 1rem; text-align: center; }
-        nav { margin: 1rem 0; }
-        nav a { margin: 0 1rem; text-decoration: none; }
-        main { display: flex; }
-        article { flex: 3; margin-right: 20px; }
-        aside { flex: 1; background: #f4f4f4; padding: 1rem; }
-        .cta-button { background: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }
-        .toc ul { list-style-type: none; padding: 0; }
-        .toc li { margin: 10px 0; }
-        footer { margin-top: 2rem; padding: 1rem; background: #f4f4f4; }
-        .footer-content { display: flex; justify-content: space-between; }
-        .footer-section { flex: 1; margin: 0 20px; }
-        .roadmap { margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; }
-        .level { margin: 15px 0; padding: 10px; border-left: 3px solid #007bff; }
-    </style>
-</head>
+
+            /* Apply base styles */
+            body {
+                font-family: var(--font-family);
+                font-size: var(--font-size-base);
+                line-height: var(--line-height);
+                color: var(--text-color);
+                background-color: #fff;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Layout */
+            header {
+                background-color: var(--light-color);
+                padding: var(--spacing-sm) 0;
+                box-shadow: var(--shadow);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            nav {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--spacing-sm);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            nav a {
+                color: var(--text-color);
+                text-decoration: none;
+                padding: var(--spacing-xs) var(--spacing-sm);
+                border-radius: var(--radius);
+                transition: var(--transition);
+            }
+
+            nav a:hover {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+            main {
+                flex: 1;
+                max-width: var(--max-width);
+                margin: var(--spacing-lg) auto;
+                padding: 0 var(--spacing-sm);
+                display: flex;
+                gap: var(--spacing-lg);
+            }
+
+            article {
+                flex: 3;
+            }
+
+            aside {
+                flex: 1;
+                align-self: start;
+                position: sticky;
+                top: 80px;
+            }
+
+            footer {
+                background-color: var(--light-color);
+                padding: var(--spacing-lg) 0;
+                margin-top: var(--spacing-xl);
+            }
+
+            .footer-content {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--spacing-sm);
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--spacing-lg);
+            }
+
+            .footer-section {
+                flex: 1;
+                min-width: 200px;
+            }
+        </style>
+        <style>
+            /* Typography */
+            .page-title {
+                font-size: var(--font-size-4xl);
+                font-weight: 700;
+                color: var(--dark-color);
+                margin-bottom: var(--spacing-md);
+                line-height: 1.2;
+                text-align: center;
+            }
+
+            .article-meta {
+                display: flex;
+                gap: var(--spacing-md);
+                margin-bottom: var(--spacing-lg);
+                padding-bottom: var(--spacing-md);
+                border-bottom: 1px solid var(--border-color);
+                color: var(--text-light);
+                font-size: var(--font-size-sm);
+                flex-wrap: wrap;
+            }
+
+            .author {
+                font-weight: 600;
+            }
+
+            .publish-date, .reading-time {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .publish-date::before {
+                content: "📅";
+            }
+
+            .reading-time::before {
+                content: "⏱️";
+            }
+
+            .toc-title {
+                font-size: var(--font-size-xl);
+                font-weight: 600;
+                color: var(--dark-color);
+                margin-bottom: var(--spacing-md);
+            }
+
+            .toc-list {
+                list-style: none;
+                padding: 0;
+            }
+
+            .toc-item {
+                margin-bottom: var(--spacing-sm);
+            }
+
+            .toc-link {
+                color: var(--primary-color);
+                text-decoration: none;
+                padding: var(--spacing-xs) var(--spacing-sm);
+                border-radius: var(--radius);
+                transition: var(--transition);
+                display: block;
+                border-left: 3px solid transparent;
+            }
+
+            .toc-link:hover {
+                background-color: var(--light-color);
+                border-left-color: var(--primary-color);
+            }
+
+            /* Responsive typography */
+            @media (max-width: 768px) {
+                .page-title {
+                    font-size: var(--font-size-3xl);
+                }
+                
+                .article-meta {
+                    font-size: var(--font-size-sm);
+                }
+                
+                .toc-title {
+                    font-size: var(--font-size-lg);
+                }
+            }
+
+            @media (max-width: 480px) {
+                .page-title {
+                    font-size: var(--font-size-2xl);
+                }
+                
+                .article-meta {
+                    font-size: var(--font-size-xs);
+                }
+                
+                .toc-title {
+                    font-size: var(--font-size-base);
+                }
+            }
 <body>
     <header>
         <nav>
@@ -74,28 +240,28 @@
     <main>
         <article>
             <!-- H1 with Primary Keyword -->
-            <h1>Tech Career Roadmap: Your Path to Success in Technology</h1>
+            <h1 class="page-title">Tech Career Roadmap: Your Path to Success in Technology</h1>
             
             <!-- Author and Date (builds trust) -->
             <div class="article-meta">
-                <span>By Your Name</span>
-                <time datetime="2025-01-25">January 25, 2025</time>
-                <span>20 min read</span>
+                <span class="author">By Your Name</span>
+                <time datetime="2025-01-25" class="publish-date">January 25, 2025</time>
+                <span class="reading-time">20 min read</span>
             </div>
             
             <!-- Table of Contents -->
             <nav class="toc">
-                <h2>What You'll Learn:</h2>
-                <ul>
-                    <li><a href="#why-roadmap">Why You Need a Tech Career Roadmap</a></li>
-                    <li><a href="#common-paths">Common Tech Career Paths</a></li>
-                    <li><a href="#web-development">Web Development Path</a></li>
-                    <li><a href="#data-science">Data Science Path</a></li>
-                    <li><a href="#cybersecurity">Cybersecurity Path</a></li>
-                    <li><a href="#cloud-computing">Cloud Computing Path</a></li>
-                    <li><a href="#product-management">Product Management Path</a></li>
-                    <li><a href="#skills-evolution">How Skills Evolve by Level</a></li>
-                    <li><a href="#accelerate">How to Accelerate Your Progress</a></li>
+                <h2 class="toc-title">What You'll Learn:</h2>
+                <ul class="toc-list">
+                    <li class="toc-item"><a href="#why-roadmap" class="toc-link">Why You Need a Tech Career Roadmap</a></li>
+                    <li class="toc-item"><a href="#common-paths" class="toc-link">Common Tech Career Paths</a></li>
+                    <li class="toc-item"><a href="#web-development" class="toc-link">Web Development Path</a></li>
+                    <li class="toc-item"><a href="#data-science" class="toc-link">Data Science Path</a></li>
+                    <li class="toc-item"><a href="#cybersecurity" class="toc-link">Cybersecurity Path</a></li>
+                    <li class="toc-item"><a href="#cloud-computing" class="toc-link">Cloud Computing Path</a></li>
+                    <li class="toc-item"><a href="#product-management" class="toc-link">Product Management Path</a></li>
+                    <li class="toc-item"><a href="#skills-evolution" class="toc-link">How Skills Evolve by Level</a></li>
+                    <li class="toc-item"><a href="#accelerate" class="toc-link">How to Accelerate Your Progress</a></li>
                 </ul>
             </nav>
             

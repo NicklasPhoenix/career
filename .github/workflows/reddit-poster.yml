@@ -1,0 +1,27 @@
+name: Reddit Auto Poster
+on:
+  schedule:
+    - cron: '0 14 * * 2,5' # Tuesday & Friday at 2 PM EST (peak Reddit time)
+  workflow_dispatch:
+
+jobs:
+  post-to-reddit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install PRAW
+        run: pip install praw
+          
+      - name: Post to Reddit
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+        run: python reddit_autoposter.py

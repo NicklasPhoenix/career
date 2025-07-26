@@ -1,0 +1,33 @@
+name: Master Automation Pipeline
+on:
+  schedule:
+    # Content generation
+    - cron: '0 2 * * 1,3,5'  # Mon, Wed, Fri at 2 AM
+    
+    # Social posting
+    - cron: '0 14 * * 2,4'   # Tue, Thu at 2 PM
+    
+    # Site updates
+    - cron: '0 0 * * *'      # Daily at midnight
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Generate new content
+      - name: Generate Article
+        run: python generate_content.py
+        
+      # 2. Update site stats/dates
+      - name: Update Dynamic Content
+        run: python update_site.py
+        
+      # 3. Post to social media
+      - name: Social Media Blast
+        run: |
+          python reddit_autoposter.py
+          python twitter_autoposter.py
+          
+      # 4. Check and report metrics
+      - name: Report Metrics
+        run: python check_analytics.py
