@@ -1,0 +1,21 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <circle cx="16" cy="16" r="16" fill="url(#grad1)"/>
+  
+  <!-- Briefcase icon -->
+  <rect x="8" y="14" width="16" height="10" rx="2" fill="white" opacity="0.95"/>
+  <rect x="10" y="16" width="12" height="6" rx="1" fill="#6366f1"/>
+  <rect x="13" y="11" width="6" height="4" rx="1" fill="white" opacity="0.9"/>
+  <rect x="14" y="12" width="4" height="2" rx="0.5" fill="#6366f1"/>
+  
+  <!-- Career path arrow -->
+  <path d="M6 8 L10 6 L10 7.5 L14 7.5 L14 8.5 L10 8.5 L10 10 Z" fill="white" opacity="0.8"/>
+  <path d="M18 7.5 L22 7.5 L22 6 L26 8 L22 10 L22 8.5 L18 8.5 Z" fill="white" opacity="0.8"/>
+  
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

@@ -157,6 +157,10 @@ def create_full_html_article(topic, sections, faq_questions):
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/career/favicon.svg">
+    
     <link rel="stylesheet" href="/career/css/styles.css">
     
     <!-- Google tag (gtag.js) -->
