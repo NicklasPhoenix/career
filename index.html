@@ -19,12 +19,16 @@
                 <a href="/career/tools/">Career Tools</a>
             </nav>
         </header>
-        <header>
+        <div class="site-header">
             <h1>Career Path Analyzer</h1>
             <p class="subtitle">Discover careers that match your skills, interests, and goals</p>
-        </header>
+        </div>
         
         <div class="quiz-container" id="quizContainer">
+            <div class="quiz-intro">
+                <h2>Find Your Perfect Career Match</h2>
+                <p>Answer these questions to get personalized career recommendations based on your unique profile.</p>
+            </div>
             <form id="careerForm">
                 <div class="question">
                     <h3>1. What are your strongest skills? (Select up to 5)</h3>
@@ -128,7 +132,7 @@
                     </select>
                 </div>
                 
-                <button type="submit" class="btn">Analyze My Career Path</button>
+                <button type="submit" class="btn">🚀 Analyze My Career Path</button>
             </form>
         </div>
         
@@ -154,7 +158,7 @@
                 </ul>
                 <div class="price">$9.99</div>
                 <p style="margin-bottom: 20px;">One-time payment • Instant access • 30-day money-back guarantee</p>
-                <button class="btn" onclick="showPayment()">Get Full Report Now</button>
+                <button class="btn" onclick="showPayment()">💎 Get Full Report Now</button>
             </div>
             
             <div class="payment-form" id="paymentForm">
@@ -455,13 +459,15 @@
         }
     </script>
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MYK51P2BNR"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX'); // Replace with your ID
+
+        gtag('config', 'G-MYK51P2BNR');
+        
         // Update canonical URL for the homepage
         const canonicalLink = document.querySelector('link[rel="canonical"]');
         if (canonicalLink) {
@@ -500,21 +506,6 @@ function updateDynamicContent() {
 
 // Run on page load
 document.addEventListener('DOMContentLoaded', updateDynamicContent);
-</script>
-
-<!-- Monetization and Analytics Scripts -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-  
-  // Track important events
-  gtag('event', 'page_view', {
-    'page_title': document.title,
-    'page_location': window.location.href
-  });
 </script>
 
 <!-- A/B test different price points -->
