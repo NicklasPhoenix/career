@@ -200,6 +200,7 @@ p {
     margin-bottom: 1rem;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
+    color: var(--white) !important;
     z-index: 1;
 }
 
@@ -856,7 +857,13 @@ select:focus {
 
 /* Sidebar */
 aside {
-    margin-top: 3rem;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
 }
 
 .related,
@@ -964,11 +971,34 @@ footer {
     transform: translateX(4px);
 }
 
-/* Article Layout */
+/* Main Layout with Sidebar */
+main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    margin-top: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 main article {
-    max-width: 900px;
-    margin: 0 auto;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-md);
     line-height: 1.8;
+    min-height: fit-content;
+}
+
+/* Single column layout for pages without sidebar */
+main.single-column {
+    display: block;
+    max-width: 900px;
+}
+
+main.single-column article {
+    max-width: none;
 }
 
 main article h1 {
@@ -1054,6 +1084,239 @@ main article strong {
 }
 
 /* Responsive Design */
+/* Tool page specific styling */
+.tool-section, .features-grid, .steps-grid, .tips-grid {
+    margin: 2rem 0;
+}
+
+.features-grid, .steps-grid, .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.feature-card, .step, .tip-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.feature-card:hover, .step:hover, .tip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.feature-icon, .step-number {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.step-number {
+    background: var(--primary);
+    color: var(--white);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: bold;
+}
+
+.tool-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    margin: 2rem 0;
+}
+
+/* Form styling for tools */
+.form-section {
+    margin: 2rem 0;
+}
+
+.form-group {
+    margin: 1.5rem 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    background: var(--white);
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+/* Upload area styling */
+.upload-area {
+    border: 3px dashed var(--gray-300);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--gray-50);
+}
+
+.upload-area:hover {
+    border-color: var(--primary);
+    background: var(--primary-50);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--gray-400);
+}
+
+/* Results sections for tools */
+.results-section {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.score-display,
+.salary-display {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.score-circle {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: var(--shadow-lg);
+}
+
+.score-label {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.salary-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.salary-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+}
+
+/* Feedback sections */
+.feedback-sections,
+.skills-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.feedback-category,
+.skill-category {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Rating buttons for skill analyzer */
+.rating-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.rating-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--gray-300);
+    background: var(--white);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.rating-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-50);
+}
+
+.rating-btn.selected {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.skill-item {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+}
+
+.skill-category-rating h4 {
+    margin-bottom: 1rem;
+    color: var(--gray-800);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+}
+
 @media (max-width: 1024px) {
     .container {
         padding: 0 1rem;
@@ -1061,6 +1324,16 @@ main article strong {
     
     .site-header {
         padding: 3rem 2rem;
+    }
+    
+    main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    aside {
+        order: 2;
+        position: static;
     }
     
     .quiz-container {
