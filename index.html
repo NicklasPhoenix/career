@@ -178,9 +178,8 @@
             
             <div class="payment-form" id="paymentForm">
                 <h3>Secure Payment</h3>
-                <p>You'll be redirected to PayPal/Stripe for secure payment</p>
-                <button class="btn" onclick="processPayment()">Pay with PayPal</button>
-                <button class="btn" onclick="processPayment()">Pay with Card (Stripe)</button>
+                <p>You'll be redirected to Gumroad for secure payment</p>
+                <a href="https://sheepernick.gumroad.com/l/nsqbp" class="btn" target="_blank">💳 Buy Now with Gumroad</a>
             </div>
             
             <div class="share-buttons">
@@ -454,8 +453,8 @@
         }
         
         function processPayment() {
-            // In production, integrate with Stripe/PayPal
-            alert('Payment integration would go here. For GitHub Pages, you can use:\n\n1. Stripe Payment Links\n2. PayPal.Me links\n3. Gumroad integration\n4. Buy Me a Coffee\n\nEach provides a simple URL you can redirect to.');
+            // Redirect to Gumroad
+            window.open('https://sheepernick.gumroad.com/l/nsqbp', '_blank');
         }
         
         function shareTwitter() {
