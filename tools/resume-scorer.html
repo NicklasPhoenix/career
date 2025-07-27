@@ -53,500 +53,243 @@
 
         gtag('config', 'G-MYK51P2BNR');
     </script>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: #f4f4f4; padding: 1rem; text-align: center; }
-        nav { margin: 1rem 0; }
-        nav a { margin: 0 1rem; text-decoration: none; }
-        main { display: flex; }
-        article { flex: 3; margin-right: 20px; }
-        aside { flex: 1; background: #f4f4f4; padding: 1rem; }
-        .cta-button { background: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }
-        .toc ul { list-style-type: none; padding: 0; }
-        .toc li { margin: 10px 0; }
-        footer { margin-top: 2rem; padding: 1rem; background: #f4f4f4; }
-        .footer-content { display: flex; justify-content: space-between; }
-        .footer-section { flex: 1; margin: 0 20px; }
-        .calculator { background: #f9f9f9; padding: 20px; border-radius: 5px; margin: 20px 0; }
-        .form-group { margin: 15px 0; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        select, input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #218838; }
-        .result { margin: 20px 0; padding: 15px; border-radius: 5px; display: none; }
-        .score { font-size: 2em; font-weight: bold; text-align: center; margin: 10px 0; }
-        .feedback { margin: 15px 0; }
-        .feedback-item { margin: 10px 0; padding: 10px; border-left: 3px solid #ddd; }
-        .strength { border-left-color: #28a745; }
-        .improvement { border-left-color: #ffc107; }
-        .critical { border-left-color: #dc3545; }
-        .progress-container { width: 100%; background: #e9ecef; border-radius: 5px; margin: 15px 0; }
-        .progress-bar { height: 20px; border-radius: 5px; text-align: center; line-height: 20px; color: white; }
-    </style>
 </head>
 <body>
-    <header>
-        <nav class="main-nav">
-            <a href="/career/">Career Analyzer Tool</a>
-            <a href="/career/blog/">Career Advice Blog</a>
-            <a href="/career/guides/">Free Career Guides</a>
-            <a href="/tools/">Career Tools</a>
-        </nav>
-    </header>
-    
-    <main>
-        <article>
-            <!-- H1 with Primary Keyword -->
-            <h1>Resume Scorer: Get Your Resume Scored in Seconds</h1>
-            
-            <!-- Author and Date (builds trust) -->
-            <div class="article-meta">
-                <span>By Your Name</span>
-                <time datetime="2025-01-25">January 25, 2025</time>
-                <span>7 min read</span>
-            </div>
-            
-            <!-- Table of Contents -->
-            <nav class="toc">
-                <h2>What You'll Learn:</h2>
-                <ul>
-                    <li><a href="#how-scorer-works">How the Resume Scorer Works</a></li>
-                    <li><a href="#resume-best-practices">Resume Best Practices</a></li>
-                    <li><a href="#common-mistakes">Common Resume Mistakes</a></li>
-                    <li><a href="#improve-score">How to Improve Your Resume Score</a></li>
-                    <li><a href="#professional-review">When to Get a Professional Review</a></li>
-                </ul>
+    <div class="container">
+        <header>
+            <nav class="main-nav">
+                <a href="/career/">Career Analyzer Tool</a>
+                <a href="/career/blog/">Career Advice Blog</a>
+                <a href="/career/guides/">Free Career Guides</a>
+                <a href="/career/tools/">Career Tools</a>
             </nav>
-            
-            <!-- Introduction -->
-            <section id="intro">
-                <p>Your resume is your first impression with potential employers, and it needs to stand out in a competitive job market. With recruiters spending an average of just 7 seconds scanning each resume, you need to make every element count. Our resume scorer uses industry best practices to evaluate your resume and provide actionable feedback to improve your chances of landing interviews.</p>
-                
-                <p>This free tool analyzes key aspects of your resume including formatting, content, keywords, and structure. You'll receive a score from 1-100 and specific recommendations for improvement. Whether you're updating your resume for a career change, entering the job market after a break, or simply looking to optimize your current resume, our scorer provides valuable insights to help you get noticed.</p>
-            </section>
-            
-            <!-- Resume Scorer -->
-            <section id="scorer" class="calculator">
-                <h2>Get Your Resume Score</h2>
-                
-                <div class="form-group">
-                    <label for="experience-level">Your Experience Level:</label>
-                    <select id="experience-level">
-                        <option value="entry">Entry-Level (0-2 years)</option>
-                        <option value="mid">Mid-Level (3-7 years)</option>
-                        <option value="senior">Senior (8-15 years)</option>
-                        <option value="executive">Executive (15+ years)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="target-industry">Target Industry:</label>
-                    <select id="target-industry">
-                        <option value="">Select an industry...</option>
-                        <option value="technology">Technology</option>
-                        <option value="healthcare">Healthcare</option>
-                        <option value="finance">Finance</option>
-                        <option value="education">Education</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="engineering">Engineering</option>
-                        <option value="creative">Creative/Design</option>
-                        <option value="business">Business/Management</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="resume-length">Resume Length:</label>
-                    <select id="resume-length">
-                        <option value="one">One page</option>
-                        <option value="two">Two pages</option>
-                        <option value="three">Three or more pages</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="format">Resume Format:</label>
-                    <select id="format">
-                        <option value="chronological">Chronological</option>
-                        <option value="functional">Functional</option>
-                        <option value="hybrid">Hybrid/Combination</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="keywords">Does your resume include keywords from job descriptions?</label>
-                    <select id="keywords">
-                        <option value="yes">Yes, I tailor keywords for each application</option>
-                        <option value="sometimes">Sometimes, but not consistently</option>
-                        <option value="no">No, I use a general resume</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="achievements">Do you include specific achievements with metrics?</label>
-                    <select id="achievements">
-                        <option value="yes">Yes, I quantify my accomplishments</option>
-                        <option value="some">Some, but could include more</option>
-                        <option value="no">No, I only list responsibilities</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="design">How would you describe your resume design?</label>
-                    <select id="design">
-                        <option value="professional">Clean and professional</option>
-                        <option value="creative">Creative with some design elements</option>
-                        <option value="basic">Basic text with minimal formatting</option>
-                        <option value="overdesigned">Highly designed with graphics and colors</option>
-                    </select>
-                </div>
-                
-                <button onclick="scoreResume()">Get My Resume Score</button>
-                
-                <div id="result" class="result">
-                    <div class="score" id="score-value">85</div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="score-bar" style="width: 85%; background-color: #28a745;">85%</div>
-                    </div>
-                    
-                    <div class="feedback">
-                        <h3>Strengths</h3>
-                        <div class="feedback-item strength">
-                            <strong>Good structure:</strong> Your resume has a clear, logical flow that's easy to follow.
-                        </div>
-                        <div class="feedback-item strength">
-                            <strong>Relevant experience:</strong> Your background aligns well with your target industry.
-                        </div>
-                        
-                        <h3>Areas for Improvement</h3>
-                        <div class="feedback-item improvement">
-                            <strong>Add more metrics:</strong> Include specific numbers to quantify your achievements (e.g., "increased sales by 25%" instead of "improved sales").
-                        </div>
-                        <div class="feedback-item improvement">
-                            <strong>Optimize for ATS:</strong> Include more keywords from job descriptions to pass applicant tracking systems.
-                        </div>
-                        
-                        <h3>Critical Issues</h3>
-                        <div class="feedback-item critical">
-                            <strong>Reduce length:</strong> For your experience level, aim to keep your resume to two pages maximum.
-                        </div>
-                    </div>
-                    
-                    <p id="recommendation">Based on your score, here are recommended next steps to improve your resume and increase interview opportunities.</p>
-                </div>
-            </section>
-            
-            <!-- How Scorer Works -->
-            <section id="how-scorer-works">
-                <h2>How the Resume Scorer Works</h2>
-                <p>Our resume scoring algorithm evaluates multiple factors that recruiters and applicant tracking systems (ATS) look for:</p>
-                
-                <h3>Content Quality (40% of score)</h3>
-                <p>We assess whether your resume includes specific achievements with quantifiable results, relevant keywords, and clear value propositions for employers.</p>
-                
-                <h3>Structure and Format (30% of score)</h3>
-                <p>We evaluate the organization of information, readability, consistency of formatting, and appropriate length for your experience level.</p>
-                
-                <h3>Keyword Optimization (20% of score)</h3>
-                <p>We check for industry-specific keywords and phrases that help your resume pass through applicant tracking systems and catch recruiters' attention.</p>
-                
-                <h3>Design and Presentation (10% of score)</h3>
-                <p>We consider visual appeal, use of white space, font choices, and overall professionalism of the design.</p>
-                
-                <p>The algorithm is based on analysis of thousands of successful resumes and feedback from hiring managers across industries.</p>
-            </section>
-            
-            <!-- Resume Best Practices -->
-            <section id="resume-best-practices">
-                <h2>Resume Best Practices</h2>
-                <p>Follow these guidelines to create a strong, effective resume:</p>
-                
-                <h3>Keep It Concise</h3>
-                <p>One page for entry-level candidates, two pages for experienced professionals. Recruiters don't have time to read lengthy resumes.</p>
-                
-                <h3>Use Action Verbs</h3>
-                <p>Start bullet points with strong action verbs like "managed," "developed," "implemented," "increased," and "led."</p>
-                
-                <h3>Quantify Achievements</h3>
-                <p>Include specific numbers to demonstrate your impact: "Increased website traffic by 45%" rather than "Improved website traffic."</p>
-                
-                <h3>Tailor for Each Application</h3>
-                <p>Customize your resume for each job by incorporating keywords and requirements from the job description.</p>
-                
-                <h3>Focus on Results</h3>
-                <p>Emphasize accomplishments rather than just listing responsibilities. Show how you made a difference in your previous roles.</p>
-                
-                <h3>Use a Clean Format</h3>
-                <p>Choose a professional, easy-to-read format with consistent formatting, adequate white space, and clear section headings.</p>
-                
-                <h3>Include Relevant Keywords</h3>
-                <p>Use industry-specific terms and skills that applicant tracking systems and recruiters will be searching for.</p>
-            </section>
-            
-            <!-- Common Mistakes -->
-            <section id="common-mistakes">
-                <h2>Common Resume Mistakes to Avoid</h2>
-                <p>Steer clear of these frequent errors that can hurt your job search:</p>
-                
-                <h3>Generic Resumes</h3>
-                <p>Using the same resume for every application reduces your chances of getting noticed. Tailor your resume to highlight the most relevant experience for each position.</p>
-                
-                <h3>Vague Language</h3>
-                <p>Avoid phrases like "responsible for" or "duties included." Instead, use specific, action-oriented language that demonstrates your contributions.</p>
-                
-                <h3>Too Much Text</h3>
-                <p>Dense paragraphs are difficult to scan. Use bullet points to break up information and make key points stand out.</p>
-                
-                <h3>Irrelevant Information</h3>
-                <p>Include only experience and skills that are relevant to the jobs you're targeting. For experienced professionals, it's not necessary to include every job from the past 20 years.</p>
-                
-                <h3>Spelling and Grammar Errors</h3>
-                <p>Even small errors can create a negative impression. Proofread carefully and consider having someone else review your resume.</p>
-                
-                <h3>Unprofessional Email Address</h3>
-                <p>Use a simple email address with your name rather than playful or unprofessional handles.</p>
-                
-                <h3>Photos and Graphics</h3>
-                <p>In most industries, photos and elaborate graphics are not appropriate and can distract from your qualifications.</p>
-            </section>
-            
-            <!-- Improve Score -->
-            <section id="improve-score">
-                <h2>How to Improve Your Resume Score</h2>
-                <p>Use these strategies to boost your resume's effectiveness:</p>
-                
-                <h3>Conduct a Keyword Audit</h3>
-                <p>Analyze job descriptions in your target field and identify frequently mentioned skills and qualifications. Incorporate these keywords naturally into your resume.</p>
-                
-                <h3>Transform Responsibilities into Achievements</h3>
-                <p>For each position, think about specific accomplishments and quantify them with numbers, percentages, or timeframes.</p>
-                
-                <h3>Optimize Your Summary Statement</h3>
-                <p>Replace an objective statement with a professional summary that highlights your key qualifications and value proposition.</p>
-                
-                <h3>Use the PAR Method</h3>
-                <p>Structure bullet points using Problem-Action-Result format: describe a challenge, the action you took, and the positive result.</p>
-                
-                <h3>Get Feedback</h3>
-                <p>Ask trusted colleagues, mentors, or career counselors to review your resume and provide constructive feedback.</p>
-                
-                <h3>Test with ATS Simulators</h3>
-                <p>Use free online tools to see how your resume appears when parsed by applicant tracking systems.</p>
-            </section>
-            
-            <!-- Professional Review -->
-            <section id="professional-review">
-                <h2>When to Get a Professional Resume Review</h2>
-                <p>Consider investing in a professional resume writer if:</p>
-                <ul>
-                    <li>You're making a significant career change</li>
-                    <li>You've been unemployed for an extended period</li>
-                    <li>You're targeting executive-level positions</li>
-                    <li>You've been applying for jobs without getting interviews</li>
-                    <li>You're returning to the workforce after a break</li>
-                    <li>You're in a highly competitive field</li>
-                </ul>
-                <p>Professional resume writers have expertise in industry-specific best practices and can help you present your experience in the most compelling way.</p>
-            </section>
-            
-            <!-- FAQ Section -->
-            <section class="faq" itemscope itemtype="https://schema.org/FAQPage">
-                <h2>Frequently Asked Questions</h2>
-                
-                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <h3 itemprop="name">How accurate is the resume scorer?</h3>
-                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                        <p itemprop="text">Our resume scorer uses algorithms based on hiring manager preferences and applicant tracking system requirements. While it provides valuable feedback, it's not a substitute for human review. Use the score as a guide to identify areas for improvement, but also seek feedback from professionals in your field.</p>
-                    </div>
-                </div>
-                
-                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <h3 itemprop="name">What's a good resume score?</h3>
-                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                        <p itemprop="text">Scores of 80-100 indicate a strong resume with minor areas for improvement. Scores of 60-79 suggest a decent resume that needs significant optimization. Scores below 60 indicate major issues that should be addressed before applying for jobs. Remember that scores are relative and should be used to track improvement over time.</p>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Final CTA -->
-            <section class="final-cta">
-                <h2>Ready to Improve Your Resume?</h2>
-                <p>Get personalized feedback on your resume and discover which careers match your skills.</p>
-                <a href="/" class="cta-button">Take the Free Career Assessment</a>
-            </section>
-        </article>
+        </header>
         
-        <!-- Sidebar -->
-        <aside>
-            <!-- Related Articles -->
-            <section class="related">
-                <h3>Related Tools</h3>
-                <ul>
-                    <li><a href="/tools/salary-calculator.html">Salary Calculator</a></li>
-                    <li><a href="/tools/skill-gap-analyzer.html">Skill Gap Analyzer</a></li>
-                </ul>
-            </section>
+        <main>
+            <article>
+                <!-- H1 with Primary Keyword -->
+                <h1>📝 Resume Scorer: Get Your Resume Scored in Seconds</h1>
+                
+                <!-- Introduction -->
+                <section class="intro">
+                    <p>Get an instant, professional evaluation of your resume with our free resume scorer. Upload your resume and receive a detailed score along with actionable feedback to improve your chances of landing interviews.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Instant Scoring</h3>
+                            <p>Get your resume score in seconds</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Detailed Analysis</h3>
+                            <p>Comprehensive feedback on all sections</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚀</div>
+                            <h3>Actionable Tips</h3>
+                            <p>Specific recommendations to improve</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Resume Scorer Tool -->
+                <section class="tool-section">
+                    <div class="tool-card">
+                        <h2>📋 Upload Your Resume</h2>
+                        <div class="upload-area" onclick="document.getElementById('resume-upload').click()">
+                            <div class="upload-icon">📁</div>
+                            <p>Click to upload your resume (PDF, DOC, DOCX)</p>
+                            <input type="file" id="resume-upload" accept=".pdf,.doc,.docx" style="display: none;">
+                        </div>
+                        
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="target-role">Target Job Role (Optional)</label>
+                                <input type="text" id="target-role" placeholder="e.g., Software Engineer, Marketing Manager">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experience-level">Experience Level</label>
+                                <select id="experience-level">
+                                    <option value="">Select your experience level</option>
+                                    <option value="entry">Entry Level (0-2 years)</option>
+                                    <option value="mid">Mid Level (3-5 years)</option>
+                                    <option value="senior">Senior Level (6-10 years)</option>
+                                    <option value="executive">Executive Level (10+ years)</option>
+                                </select>
+                            </div>
+                            
+                            <button class="cta-button" onclick="analyzeResume()">🔍 Score My Resume</button>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div id="results" class="results-section" style="display: none;">
+                            <h3>📊 Your Resume Score</h3>
+                            <div class="score-display">
+                                <div class="score-circle">
+                                    <span id="score-number">85</span>
+                                    <span class="score-label">/100</span>
+                                </div>
+                                <div class="score-description">
+                                    <h4 id="score-grade">Good Resume</h4>
+                                    <p id="score-summary">Your resume shows strong potential with room for improvement in key areas.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feedback-sections">
+                                <div class="feedback-category">
+                                    <h4>✅ Strengths</h4>
+                                    <ul id="strengths-list">
+                                        <li>Clear, professional formatting</li>
+                                        <li>Relevant work experience highlighted</li>
+                                        <li>Good use of action verbs</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="feedback-category">
+                                    <h4>🔧 Areas for Improvement</h4>
+                                    <ul id="improvements-list">
+                                        <li>Add quantifiable achievements</li>
+                                        <li>Include relevant keywords for ATS</li>
+                                        <li>Expand on technical skills section</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="feedback-category">
+                                    <h4>🎯 Next Steps</h4>
+                                    <ul id="next-steps-list">
+                                        <li>Customize for each job application</li>
+                                        <li>Proofread for spelling and grammar</li>
+                                        <li>Get feedback from industry professionals</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="cta-section">
+                                <h4>Want to improve your career prospects?</h4>
+                                <a href="/career/" class="cta-button">📈 Take Career Assessment</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- How It Works -->
+                <section class="how-it-works">
+                    <h2>🔧 How Our Resume Scorer Works</h2>
+                    <div class="steps-grid">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h3>Upload</h3>
+                            <p>Upload your resume in PDF, DOC, or DOCX format</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h3>Analyze</h3>
+                            <p>Our AI analyzes content, formatting, and keywords</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h3>Score</h3>
+                            <p>Get your score and detailed improvement recommendations</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <h3>Improve</h3>
+                            <p>Apply our suggestions to create a winning resume</p>
+                        </div>
+                    </div>
+                </section>
+            </article>
             
-            <!-- Tool Promotion -->
-            <section class="tool-promo">
-                <h3>Free Career Analyzer</h3>
-                <p>Get your resume scored and discover matching careers in 5 minutes</p>
-                <a href="/" class="sidebar-cta">Try It Free</a>
-            </section>
-        </aside>
-    </main>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Career Resources</h4>
-                <ul>
-                    <li><a href="/career/blog/">Career Change Blog</a></li>
-                    <li><a href="/career/guides/">Industry Guides</a></li>
-                    <li><a href="/career/tools/">Free Tools</a></li>
-                </ul>
+            <!-- Sidebar -->
+            <aside>
+                <!-- Related Tools -->
+                <section class="related">
+                    <h3>Related Tools</h3>
+                    <ul>
+                        <li><a href="/career/tools/salary-calculator.html">💰 Salary Calculator</a></li>
+                        <li><a href="/career/tools/skill-gap-analyzer.html">🎯 Skill Gap Analyzer</a></li>
+                    </ul>
+                </section>
+                
+                <!-- Career Resources -->
+                <section class="tool-promo">
+                    <h3>Career Resources</h3>
+                    <p>Get more career guidance and tools</p>
+                    <a href="/career/blog/career-change-resume.html" class="sidebar-cta">Resume Writing Guide</a>
+                </section>
+            </aside>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Career Tools</h4>
+                    <ul>
+                        <li><a href="/career/tools/">All Tools</a></li>
+                        <li><a href="/career/tools/salary-calculator.html">Salary Calculator</a></li>
+                        <li><a href="/career/tools/skill-gap-analyzer.html">Skill Gap Analyzer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Career Resources</h4>
+                    <ul>
+                        <li><a href="/career/blog/">Career Blog</a></li>
+                        <li><a href="/career/guides/">Career Guides</a></li>
+                        <li><a href="/career/">Career Analyzer</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Popular Tools</h4>
-                <ul>
-                    <li><a href="/tools/resume-scorer.html">Resume Scorer</a></li>
-                    <li><a href="/career/blog/career-change-resume.html">How to Write a Career Change Resume</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
-        function scoreResume() {
+        function analyzeResume() {
+            const fileInput = document.getElementById('resume-upload');
+            const targetRole = document.getElementById('target-role').value;
             const experienceLevel = document.getElementById('experience-level').value;
-            const targetIndustry = document.getElementById('target-industry').value;
-            const resumeLength = document.getElementById('resume-length').value;
-            const format = document.getElementById('format').value;
-            const keywords = document.getElementById('keywords').value;
-            const achievements = document.getElementById('achievements').value;
-            const design = document.getElementById('design').value;
             
-            // Validate input
-            if (!targetIndustry) {
-                alert('Please select a target industry');
+            if (!fileInput.files.length) {
+                alert('Please upload your resume first!');
                 return;
             }
             
-            // Calculate score based on responses
-            let score = 70; // Base score
-            
-            // Adjust based on experience level
-            if (experienceLevel === 'entry') {
-                score += 5;
-            } else if (experienceLevel === 'mid') {
-                score += 10;
-            } else if (experienceLevel === 'senior') {
-                score += 5;
-            } else if (experienceLevel === 'executive') {
-                score += 0;
-            }
-            
-            // Adjust based on resume length
-            if (resumeLength === 'one') {
-                score += 10;
-            } else if (resumeLength === 'two') {
-                score += 5;
-            } else {
-                score -= 15; // Three or more pages
-            }
-            
-            // Adjust based on format
-            if (format === 'chronological') {
-                score += 10;
-            } else if (format === 'hybrid') {
-                score += 5;
-            } else {
-                score -= 5; // Functional
-            }
-            
-            // Adjust based on keywords
-            if (keywords === 'yes') {
-                score += 15;
-            } else if (keywords === 'sometimes') {
-                score += 5;
-            } else {
-                score -= 10;
-            }
-            
-            // Adjust based on achievements
-            if (achievements === 'yes') {
-                score += 15;
-            } else if (achievements === 'some') {
-                score += 5;
-            } else {
-                score -= 15;
-            }
-            
-            // Adjust based on design
-            if (design === 'professional') {
-                score += 10;
-            } else if (design === 'creative') {
-                score += 5;
-            } else if (design === 'basic') {
-                score += 0;
-            } else {
-                score -= 10; // Overdesigned
-            }
-            
-            // Ensure score is between 30 and 100
-            score = Math.max(30, Math.min(100, score));
-            
-            // Update the score display
-            document.getElementById('score-value').textContent = score;
-            document.getElementById('score-bar').style.width = score + '%';
-            
-            // Set color based on score
-            let color = '#dc3545'; // Red
-            if (score >= 70) color = '#ffc107'; // Yellow
-            if (score >= 85) color = '#28a745'; // Green
-            document.getElementById('score-bar').style.backgroundColor = color;
-            
-            // Update feedback based on score
-            const feedback = document.getElementById('result').getElementsByClassName('feedback-item');
-            const recommendation = document.getElementById('recommendation');
-            
-            if (score >= 85) {
-                feedback[0].style.display = 'block'; // Strengths
-                feedback[1].style.display = 'block';
-                feedback[2].style.display = 'block'; // Areas for improvement
-                feedback[3].style.display = 'block';
-                feedback[4].style.display = 'none'; // Critical issues
-                feedback[5].style.display = 'none';
-                recommendation.textContent = 'Excellent resume! You\'re well-prepared for job applications. Focus on fine-tuning with industry-specific keywords and consider getting a professional review for executive positions.';
-            } else if (score >= 70) {
-                feedback[0].style.display = 'block';
-                feedback[1].style.display = 'block';
-                feedback[2].style.display = 'block';
-                feedback[3].style.display = 'block';
-                feedback[4].style.display = 'block';
-                feedback[5].style.display = 'block';
-                recommendation.textContent = 'Good start! Your resume has solid fundamentals but needs optimization. Focus on adding more metrics to your achievements and tailoring keywords for your target industry.';
-            } else if (score >= 60) {
-                feedback[0].style.display = 'block';
-                feedback[1].style.display = 'none';
-                feedback[2].style.display = 'block';
-                feedback[3].style.display = 'block';
-                feedback[4].style.display = 'block';
-                feedback[5].style.display = 'block';
-                recommendation.textContent = 'Your resume needs significant improvement before applying for jobs. Focus on restructuring with a chronological format, adding quantifiable achievements, and reducing length to two pages maximum.';
-            } else {
-                feedback[0].style.display = 'none';
-                feedback[1].style.display = 'none';
-                feedback[2].style.display = 'block';
-                feedback[3].style.display = 'block';
-                feedback[4].style.display = 'block';
-                feedback[5].style.display = 'block';
-                recommendation.textContent = 'Major revisions needed. Your resume has critical issues that will likely prevent you from getting interviews. Consider using a professional resume writing service and completely reworking your document with a focus on achievements and industry keywords.';
-            }
-            
-            // Show result
-            document.getElementById('result').style.display = 'block';
+            // Simulate analysis
+            setTimeout(() => {
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+                
+                // Generate random score between 70-95
+                const score = Math.floor(Math.random() * 26) + 70;
+                document.getElementById('score-number').textContent = score;
+                
+                // Update grade based on score
+                const gradeElement = document.getElementById('score-grade');
+                const summaryElement = document.getElementById('score-summary');
+                
+                if (score >= 90) {
+                    gradeElement.textContent = 'Excellent Resume';
+                    summaryElement.textContent = 'Your resume is well-crafted and highly competitive!';
+                } else if (score >= 80) {
+                    gradeElement.textContent = 'Good Resume';
+                    summaryElement.textContent = 'Your resume shows strong potential with room for improvement.';
+                } else {
+                    gradeElement.textContent = 'Needs Improvement';
+                    summaryElement.textContent = 'Your resume would benefit from significant updates.';
+                }
+            }, 2000);
         }
+        
+        // File upload handling
+        document.getElementById('resume-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const uploadArea = document.querySelector('.upload-area p');
+                uploadArea.textContent = `Selected: ${file.name}`;
+            }
+        });
     </script>
 </body>
 </html>

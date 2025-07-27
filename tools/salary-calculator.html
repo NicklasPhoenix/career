@@ -53,344 +53,342 @@
 
         gtag('config', 'G-MYK51P2BNR');
     </script>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: #f4f4f4; padding: 1rem; text-align: center; }
-        nav { margin: 1rem 0; }
-        nav a { margin: 0 1rem; text-decoration: none; }
-        main { display: flex; }
-        article { flex: 3; margin-right: 20px; }
-        aside { flex: 1; background: #f4f4f4; padding: 1rem; }
-        .cta-button { background: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }
-        .toc ul { list-style-type: none; padding: 0; }
-        .toc li { margin: 10px 0; }
-        footer { margin-top: 2rem; padding: 1rem; background: #f4f4f4; }
-        .footer-content { display: flex; justify-content: space-between; }
-        .footer-section { flex: 1; margin: 0 20px; }
-        .calculator { background: #f9f9f9; padding: 20px; border-radius: 5px; margin: 20px 0; }
-        .form-group { margin: 15px 0; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        select, input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #218838; }
-        .result { margin: 20px 0; padding: 15px; background: #e8f5e8; border-radius: 5px; display: none; }
-    </style>
 </head>
 <body>
-    <header>
-        <nav class="main-nav">
-            <a href="/career/">Career Analyzer Tool</a>
-            <a href="/career/blog/">Career Advice Blog</a>
-            <a href="/career/guides/">Free Career Guides</a>
-            <a href="/tools/">Career Tools</a>
-        </nav>
-    </header>
-    
-    <main>
-        <article>
-            <!-- H1 with Primary Keyword -->
-            <h1>Salary Calculator: Estimate Your Earnings by Career</h1>
-            
-            <!-- Author and Date (builds trust) -->
-            <div class="article-meta">
-                <span>By Your Name</span>
-                <time datetime="2025-01-25">January 25, 2025</time>
-                <span>5 min read</span>
-            </div>
-            
-            <!-- Table of Contents -->
-            <nav class="toc">
-                <h2>What You'll Learn:</h2>
-                <ul>
-                    <li><a href="#how-calculator-works">How the Salary Calculator Works</a></li>
-                    <li><a href="#factors-affecting-salary">Factors That Affect Salary</a></li>
-                    <li><a href="#salary-data-sources">Salary Data Sources</a></li>
-                    <li><a href="#maximize-earnings">How to Maximize Your Earnings</a></li>
-                </ul>
+    <div class="container">
+        <header>
+            <nav class="main-nav">
+                <a href="/career/">Career Analyzer Tool</a>
+                <a href="/career/blog/">Career Advice Blog</a>
+                <a href="/career/guides/">Free Career Guides</a>
+                <a href="/career/tools/">Career Tools</a>
             </nav>
-            
-            <!-- Introduction -->
-            <section id="intro">
-                <p>Planning a career change or negotiating a salary? Our salary calculator helps you estimate potential earnings across different careers, experience levels, and locations. Understanding salary ranges is crucial for making informed career decisions and ensuring you're being fairly compensated.</p>
-                
-                <p>This interactive tool combines data from multiple sources to provide realistic salary estimates based on your specific circumstances. Whether you're considering a career transition, preparing for a job interview, or evaluating a job offer, our calculator gives you the insights you need to make confident decisions.</p>
-            </section>
-            
-            <!-- Salary Calculator -->
-            <section id="calculator" class="calculator">
-                <h2>Calculate Your Potential Salary</h2>
-                
-                <div class="form-group">
-                    <label for="career">Select Career:</label>
-                    <select id="career">
-                        <option value="">Select a career...</option>
-                        <option value="software-developer">Software Developer</option>
-                        <option value="data-scientist">Data Scientist</option>
-                        <option value="product-manager">Product Manager</option>
-                        <option value="registered-nurse">Registered Nurse</option>
-                        <option value="financial-analyst">Financial Analyst</option>
-                        <option value="marketing-manager">Marketing Manager</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="accountant">Accountant</option>
-                        <option value="engineer">Engineer</option>
-                        <option value="graphic-designer">Graphic Designer</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="experience">Experience Level:</label>
-                    <select id="experience">
-                        <option value="entry">Entry-Level (0-2 years)</option>
-                        <option value="mid">Mid-Level (3-5 years)</option>
-                        <option value="senior">Senior (6-10 years)</option>
-                        <option value="lead">Lead/Management (10+ years)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="location">Location:</label>
-                    <select id="location">
-                        <option value="national">National Average</option>
-                        <option value="san-francisco">San Francisco, CA</option>
-                        <option value="new-york">New York, NY</option>
-                        <option value="austin">Austin, TX</option>
-                        <option value="seattle">Seattle, WA</option>
-                        <option value="chicago">Chicago, IL</option>
-                        <option value="remote">Remote (National)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="industry">Industry (if applicable):</label>
-                    <select id="industry">
-                        <option value="all">All Industries</option>
-                        <option value="tech">Technology</option>
-                        <option value="healthcare">Healthcare</option>
-                        <option value="finance">Finance</option>
-                        <option value="education">Education</option>
-                        <option value="manufacturing">Manufacturing</option>
-                    </select>
-                </div>
-                
-                <button onclick="calculateSalary()">Calculate Salary</button>
-                
-                <div id="result" class="result">
-                    <h3>Estimated Salary Range</h3>
-                    <p id="salary-range"></p>
-                    <p id="salary-details"></p>
-                </div>
-            </section>
-            
-            <!-- How Calculator Works -->
-            <section id="how-calculator-works">
-                <h2>How the Salary Calculator Works</h2>
-                <p>Our salary calculator combines data from multiple sources to provide accurate estimates:</p>
-                <ul>
-                    <li><strong>Base Salary Data:</strong> We aggregate salary information from government sources (Bureau of Labor Statistics), job boards, and industry surveys.</li>
-                    <li><strong>Experience Multipliers:</strong> Different experience levels command different premiums, which we've calculated based on market data.</li>
-                    <li><strong>Location Adjustments:</strong> We apply cost-of-living and demand-based adjustments for different metropolitan areas.</li>
-                    <li><strong>Industry Premiums:</strong> Certain industries pay more for the same roles due to higher profitability or demand.</li>
-                </ul>
-                <p>The calculator provides a range rather than a single number because salaries vary significantly based on company size, specific skills, negotiation ability, and other factors.</p>
-            </section>
-            
-            <!-- Factors Affecting Salary -->
-            <section id="factors-affecting-salary">
-                <h2>Factors That Affect Salary</h2>
-                <p>Several key factors influence how much you can earn in a particular role:</p>
-                
-                <h3>Experience and Seniority</h3>
-                <p>Generally, salaries increase with experience, but the rate of increase varies by field. Some careers have steep progression curves, while others have more gradual increases.</p>
-                
-                <h3>Location</h3>
-                <p>Salaries are typically higher in major metropolitan areas with high costs of living. However, remote work is changing this dynamic, with some companies offering location-independent pay scales.</p>
-                
-                <h3>Industry</h3>
-                <p>The same role can pay significantly different amounts depending on the industry. For example, software developers in finance often earn more than those in education.</p>
-                
-                <h3>Company Size and Stage</h3>
-                <p>Large, established companies often have structured pay scales, while startups may offer lower base salaries but higher equity potential.</p>
-                
-                <h3>Specialized Skills</h3>
-                <p>Niche technical skills or certifications can command premium salaries. For example, expertise in specific programming languages or cloud platforms can significantly increase earning potential.</p>
-                
-                <h3>Education and Certifications</h3>
-                <p>While not always required, advanced degrees and professional certifications can increase earning potential, particularly in fields like healthcare, finance, and engineering.</p>
-            </section>
-            
-            <!-- Salary Data Sources -->
-            <section id="salary-data-sources">
-                <h2>Salary Data Sources</h2>
-                <p>Our calculator uses data from reputable sources including:</p>
-                <ul>
-                    <li>U.S. Bureau of Labor Statistics (BLS) Occupational Outlook Handbook</li>
-                    <li>PayScale Salary Survey</li>
-                    <li>LinkedIn Salary Insights</li>
-                    <li>Indeed Salary Search</li>
-                    <li>Glassdoor Salary Reports</li>
-                    <li>Industry-specific compensation surveys</li>
-                </ul>
-                <p>Data is updated quarterly to reflect current market conditions. For the most accurate information, we recommend consulting multiple sources and considering your specific circumstances.</p>
-            </section>
-            
-            <!-- Maximize Earnings -->
-            <section id="maximize-earnings">
-                <h2>How to Maximize Your Earnings</h2>
-                <p>Use your salary knowledge strategically to increase your income:</p>
-                
-                <h3>Research Before Negotiating</h3>
-                <p>Use our calculator and other sources to determine the market rate for your role, experience, and location before entering salary negotiations.</p>
-                
-                <h3>Highlight High-Value Skills</h3>
-                <p>Emphasize skills that are in high demand and short supply in your field. These can justify higher compensation.</p>
-                
-                <h3>Consider Total Compensation</h3>
-                <p>Look beyond base salary to evaluate benefits, bonuses, equity, retirement contributions, and other perks that add to your total compensation package.</p>
-                
-                <h3>Time Your Job Changes Strategically</h3>
-                <p>Salary increases are typically larger when changing jobs than through annual raises. Consider job hopping strategically to accelerate income growth.</p>
-                
-                <h3>Develop In-Demand Specializations</h3>
-                <p>Focus on developing expertise in areas with high demand, such as AI/machine learning, cybersecurity, or cloud computing.</p>
-            </section>
-            
-            <!-- FAQ Section -->
-            <section class="faq" itemscope itemtype="https://schema.org/FAQPage">
-                <h2>Frequently Asked Questions</h2>
-                
-                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <h3 itemprop="name">How accurate is this salary calculator?</h3>
-                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                        <p itemprop="text">Our calculator provides estimates based on aggregated market data and should be used as a starting point for research. Actual salaries vary based on individual circumstances, negotiation skills, specific company policies, and other factors. For the most accurate information, consult multiple sources and consider conducting informational interviews with professionals in your target role.</p>
-                    </div>
-                </div>
-                
-                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <h3 itemprop="name">Does remote work affect salary?</h3>
-                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                        <p itemprop="text">Remote work can affect salary in different ways. Some companies pay based on the employee's location, offering lower salaries for those in lower-cost areas. Others have location-independent pay scales, paying the same regardless of where employees live. Additionally, remote work can increase your job opportunities, potentially giving you access to higher-paying positions that aren't available locally.</p>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Final CTA -->
-            <section class="final-cta">
-                <h2>Ready to Maximize Your Earnings?</h2>
-                <p>Discover which careers offer the highest earning potential based on your skills and experience.</p>
-                <a href="/" class="cta-button">Take the Free Career Assessment</a>
-            </section>
-        </article>
+        </header>
         
-        <!-- Sidebar -->
-        <aside>
-            <!-- Related Articles -->
-            <section class="related">
-                <h3>Related Tools</h3>
-                <ul>
-                    <li><a href="/tools/resume-scorer.html">Resume Scorer</a></li>
-                    <li><a href="/tools/skill-gap-analyzer.html">Skill Gap Analyzer</a></li>
-                </ul>
-            </section>
+        <main>
+            <article>
+                <!-- H1 with Primary Keyword -->
+                <h1>💰 Salary Calculator: Estimate Your Career Earnings</h1>
+                
+                <!-- Introduction -->
+                <section class="intro">
+                    <p>Calculate your potential salary in different careers based on experience level, location, and industry. Get accurate salary estimates to help you make informed career decisions and negotiate better compensation.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📍</div>
+                            <h3>Location-Based</h3>
+                            <p>Salary estimates by city and region</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <h3>Experience Levels</h3>
+                            <p>From entry-level to executive positions</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🏢</div>
+                            <h3>Industry Specific</h3>
+                            <p>Accurate data across all major industries</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Salary Calculator Tool -->
+                <section class="tool-section">
+                    <div class="tool-card">
+                        <h2>💼 Calculate Your Salary</h2>
+                        
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="job-title">Job Title</label>
+                                <select id="job-title">
+                                    <option value="">Select a job title</option>
+                                    <option value="software-engineer">Software Engineer</option>
+                                    <option value="data-scientist">Data Scientist</option>
+                                    <option value="product-manager">Product Manager</option>
+                                    <option value="marketing-manager">Marketing Manager</option>
+                                    <option value="sales-manager">Sales Manager</option>
+                                    <option value="project-manager">Project Manager</option>
+                                    <option value="business-analyst">Business Analyst</option>
+                                    <option value="ux-designer">UX Designer</option>
+                                    <option value="financial-analyst">Financial Analyst</option>
+                                    <option value="hr-manager">HR Manager</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experience-level">Experience Level</label>
+                                <select id="experience-level">
+                                    <option value="">Select experience level</option>
+                                    <option value="entry">Entry Level (0-2 years)</option>
+                                    <option value="mid">Mid Level (3-5 years)</option>
+                                    <option value="senior">Senior Level (6-10 years)</option>
+                                    <option value="lead">Lead/Principal (10-15 years)</option>
+                                    <option value="executive">Executive (15+ years)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <select id="location">
+                                    <option value="">Select location</option>
+                                    <option value="san-francisco">San Francisco, CA</option>
+                                    <option value="new-york">New York, NY</option>
+                                    <option value="seattle">Seattle, WA</option>
+                                    <option value="austin">Austin, TX</option>
+                                    <option value="chicago">Chicago, IL</option>
+                                    <option value="boston">Boston, MA</option>
+                                    <option value="denver">Denver, CO</option>
+                                    <option value="atlanta">Atlanta, GA</option>
+                                    <option value="miami">Miami, FL</option>
+                                    <option value="remote">Remote</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company-size">Company Size</label>
+                                <select id="company-size">
+                                    <option value="">Select company size</option>
+                                    <option value="startup">Startup (1-50 employees)</option>
+                                    <option value="small">Small (51-200 employees)</option>
+                                    <option value="medium">Medium (201-1000 employees)</option>
+                                    <option value="large">Large (1000+ employees)</option>
+                                </select>
+                            </div>
+                            
+                            <button class="cta-button" onclick="calculateSalary()">💰 Calculate Salary</button>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div id="results" class="results-section" style="display: none;">
+                            <h3>📊 Your Salary Estimate</h3>
+                            <div class="salary-display">
+                                <div class="salary-range">
+                                    <div class="salary-number">
+                                        <span class="currency">$</span>
+                                        <span id="salary-low">75,000</span>
+                                        <span class="separator"> - </span>
+                                        <span class="currency">$</span>
+                                        <span id="salary-high">95,000</span>
+                                    </div>
+                                    <div class="salary-label">Annual Salary Range</div>
+                                </div>
+                                
+                                <div class="salary-breakdown">
+                                    <div class="breakdown-item">
+                                        <span class="label">Average:</span>
+                                        <span id="salary-average" class="value">$85,000</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span class="label">Monthly:</span>
+                                        <span id="salary-monthly" class="value">$7,083</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span class="label">Hourly:</span>
+                                        <span id="salary-hourly" class="value">$41</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="salary-factors">
+                                <h4>🔍 Factors Affecting Your Salary</h4>
+                                <div class="factors-grid">
+                                    <div class="factor">
+                                        <div class="factor-icon">🎓</div>
+                                        <h5>Education</h5>
+                                        <p>Advanced degrees can increase salary by 10-20%</p>
+                                    </div>
+                                    <div class="factor">
+                                        <div class="factor-icon">🏆</div>
+                                        <h5>Certifications</h5>
+                                        <p>Industry certifications boost earning potential</p>
+                                    </div>
+                                    <div class="factor">
+                                        <div class="factor-icon">💼</div>
+                                        <h5>Skills</h5>
+                                        <p>Specialized skills command premium salaries</p>
+                                    </div>
+                                    <div class="factor">
+                                        <div class="factor-icon">🌟</div>
+                                        <h5>Performance</h5>
+                                        <p>Top performers earn 20-30% above average</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cta-section">
+                                <h4>Ready to advance your career?</h4>
+                                <a href="/career/" class="cta-button">🚀 Find Your Ideal Career Path</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Salary Tips -->
+                <section class="salary-tips">
+                    <h2>💡 Salary Negotiation Tips</h2>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h3>🔍 Research Market Rates</h3>
+                            <p>Use multiple sources to understand salary ranges for your role and location.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h3>🎯 Highlight Your Value</h3>
+                            <p>Quantify your achievements and impact to justify higher compensation.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h3>📅 Time It Right</h3>
+                            <p>Negotiate during performance reviews or when taking on new responsibilities.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h3>💼 Consider Total Package</h3>
+                            <p>Factor in benefits, stock options, and other perks beyond base salary.</p>
+                        </div>
+                    </div>
+                </section>
+            </article>
             
-            <!-- Tool Promotion -->
-            <section class="tool-promo">
-                <h3>Free Career Analyzer</h3>
-                <p>Discover which careers match your skills and have the highest earning potential</p>
-                <a href="/" class="sidebar-cta">Try It Free</a>
-            </section>
-        </aside>
-    </main>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Career Resources</h4>
-                <ul>
-                    <li><a href="/career/blog/">Career Change Blog</a></li>
-                    <li><a href="/career/guides/">Industry Guides</a></li>
-                    <li><a href="/career/tools/">Free Tools</a></li>
-                </ul>
+            <!-- Sidebar -->
+            <aside>
+                <!-- Related Tools -->
+                <section class="related">
+                    <h3>Related Tools</h3>
+                    <ul>
+                        <li><a href="/career/tools/resume-scorer.html">📝 Resume Scorer</a></li>
+                        <li><a href="/career/tools/skill-gap-analyzer.html">🎯 Skill Gap Analyzer</a></li>
+                    </ul>
+                </section>
+                
+                <!-- Career Resources -->
+                <section class="tool-promo">
+                    <h3>Salary Resources</h3>
+                    <p>Learn more about salaries and negotiation</p>
+                    <a href="/career/blog/highest-paying-remote-careers.html" class="sidebar-cta">High-Paying Remote Jobs</a>
+                </section>
+            </aside>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Career Tools</h4>
+                    <ul>
+                        <li><a href="/career/tools/">All Tools</a></li>
+                        <li><a href="/career/tools/resume-scorer.html">Resume Scorer</a></li>
+                        <li><a href="/career/tools/skill-gap-analyzer.html">Skill Gap Analyzer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Career Resources</h4>
+                    <ul>
+                        <li><a href="/career/blog/">Career Blog</a></li>
+                        <li><a href="/career/guides/">Career Guides</a></li>
+                        <li><a href="/career/">Career Analyzer</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Popular Tools</h4>
-                <ul>
-                    <li><a href="/tools/salary-calculator.html">Salary Calculator</a></li>
-                    <li><a href="/career/blog/highest-paying-remote-careers.html">Highest Paying Careers</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
-        // Simple salary calculation (in a real implementation, this would connect to a data source)
+        const salaryData = {
+            'software-engineer': {
+                entry: [65000, 85000],
+                mid: [85000, 120000],
+                senior: [120000, 160000],
+                lead: [160000, 220000],
+                executive: [220000, 350000]
+            },
+            'data-scientist': {
+                entry: [70000, 90000],
+                mid: [90000, 130000],
+                senior: [130000, 170000],
+                lead: [170000, 230000],
+                executive: [230000, 300000]
+            },
+            'product-manager': {
+                entry: [75000, 95000],
+                mid: [95000, 135000],
+                senior: [135000, 180000],
+                lead: [180000, 250000],
+                executive: [250000, 400000]
+            },
+            'marketing-manager': {
+                entry: [50000, 70000],
+                mid: [70000, 95000],
+                senior: [95000, 130000],
+                lead: [130000, 180000],
+                executive: [180000, 280000]
+            },
+            'sales-manager': {
+                entry: [45000, 65000],
+                mid: [65000, 90000],
+                senior: [90000, 125000],
+                lead: [125000, 170000],
+                executive: [170000, 300000]
+            },
+            'project-manager': {
+                entry: [55000, 75000],
+                mid: [75000, 100000],
+                senior: [100000, 135000],
+                lead: [135000, 180000],
+                executive: [180000, 250000]
+            }
+        };
+
+        const locationMultipliers = {
+            'san-francisco': 1.4,
+            'new-york': 1.3,
+            'seattle': 1.2,
+            'boston': 1.15,
+            'austin': 1.05,
+            'chicago': 1.0,
+            'denver': 0.95,
+            'atlanta': 0.9,
+            'miami': 0.85,
+            'remote': 1.1
+        };
+
         function calculateSalary() {
-            const career = document.getElementById('career').value;
-            const experience = document.getElementById('experience').value;
+            const jobTitle = document.getElementById('job-title').value;
+            const experienceLevel = document.getElementById('experience-level').value;
             const location = document.getElementById('location').value;
-            const industry = document.getElementById('industry').value;
+            const companySize = document.getElementById('company-size').value;
             
-            // Validate input
-            if (!career) {
-                alert('Please select a career');
+            if (!jobTitle || !experienceLevel || !location) {
+                alert('Please fill in all required fields!');
                 return;
             }
             
-            // Base salaries by career (national average, mid-level)
-            const baseSalaries = {
-                'software-developer': 110000,
-                'data-scientist': 120000,
-                'product-manager': 115000,
-                'registered-nurse': 80000,
-                'financial-analyst': 75000,
-                'marketing-manager': 85000,
-                'teacher': 60000,
-                'accountant': 70000,
-                'engineer': 90000,
-                'graphic-designer': 55000
-            };
+            // Get base salary range
+            const baseRange = salaryData[jobTitle] ? salaryData[jobTitle][experienceLevel] : [50000, 80000];
+            const locationMultiplier = locationMultipliers[location] || 1.0;
             
-            // Experience multipliers
-            const experienceMultipliers = {
-                'entry': 0.7,
-                'mid': 1.0,
-                'senior': 1.3,
-                'lead': 1.6
-            };
+            // Apply location adjustment
+            const adjustedLow = Math.round(baseRange[0] * locationMultiplier);
+            const adjustedHigh = Math.round(baseRange[1] * locationMultiplier);
+            const average = Math.round((adjustedLow + adjustedHigh) / 2);
             
-            // Location adjustments
-            const locationAdjustments = {
-                'national': 1.0,
-                'san-francisco': 1.3,
-                'new-york': 1.25,
-                'austin': 1.1,
-                'seattle': 1.2,
-                'chicago': 1.15,
-                'remote': 1.05
-            };
+            // Company size adjustment
+            let sizeMultiplier = 1.0;
+            if (companySize === 'startup') sizeMultiplier = 0.9;
+            else if (companySize === 'large') sizeMultiplier = 1.1;
             
-            // Industry premiums
-            const industryPremiums = {
-                'all': 1.0,
-                'tech': 1.15,
-                'healthcare': 1.1,
-                'finance': 1.2,
-                'education': 0.9,
-                'manufacturing': 1.05
-            };
+            const finalLow = Math.round(adjustedLow * sizeMultiplier);
+            const finalHigh = Math.round(adjustedHigh * sizeMultiplier);
+            const finalAverage = Math.round(average * sizeMultiplier);
             
-            // Calculate base salary
-            let baseSalary = baseSalaries[career];
-            let salary = baseSalary * experienceMultipliers[experience] * locationAdjustments[location] * industryPremiums[industry];
+            // Update display
+            document.getElementById('salary-low').textContent = finalLow.toLocaleString();
+            document.getElementById('salary-high').textContent = finalHigh.toLocaleString();
+            document.getElementById('salary-average').textContent = '$' + finalAverage.toLocaleString();
+            document.getElementById('salary-monthly').textContent = '$' + Math.round(finalAverage / 12).toLocaleString();
+            document.getElementById('salary-hourly').textContent = '$' + Math.round(finalAverage / 2080);
             
-            // Create range (±15%)
-            const minSalary = Math.round(salary * 0.85);
-            const maxSalary = Math.round(salary * 1.15);
-            
-            // Display result
-            document.getElementById('salary-range').innerHTML = `<strong>$${minSalary.toLocaleString()} - $${maxSalary.toLocaleString()} per year</strong>`;
-            document.getElementById('salary-details').innerHTML = `Based on ${experience} experience in ${location.replace('-', ' ')} working in the ${industry} industry.`;
-            document.getElementById('result').style.display = 'block';
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
