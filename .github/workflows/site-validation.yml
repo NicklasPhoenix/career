@@ -1,0 +1,69 @@
+name: Site Validation
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Validate HTML structure
+        run: |
+          echo "Validating site structure..."
+          
+          # Check that main pages exist
+          test -f index.html || (echo "Missing main index.html" && exit 1)
+          test -f blog/index.html || (echo "Missing blog/index.html" && exit 1)
+          test -f guides/index.html || (echo "Missing guides/index.html" && exit 1)
+          test -f tools/index.html || (echo "Missing tools/index.html" && exit 1)
+          
+          # Check CSS exists
+          test -f css/styles.css || (echo "Missing css/styles.css" && exit 1)
+          
+          # Check sitemap exists
+          test -f sitemap.xml || (echo "Missing sitemap.xml" && exit 1)
+          
+          echo "✅ All required files exist"
+          
+      - name: Check for broken internal links
+        run: |
+          echo "Checking for common link patterns..."
+          
+          # Look for any remaining /blog/ or /guides/ or /tools/ links without /career/ prefix
+          if grep -r 'href="/blog/' . --include="*.html" --exclude-dir=.git; then
+            echo "❌ Found links missing /career/ prefix"
+            exit 1
+          fi
+          
+          if grep -r 'href="/guides/' . --include="*.html" --exclude-dir=.git; then
+            echo "❌ Found links missing /career/ prefix"
+            exit 1
+          fi
+          
+          if grep -r 'href="/tools/' . --include="*.html" --exclude-dir=.git; then
+            echo "❌ Found links missing /career/ prefix"
+            exit 1
+          fi
+          
+          echo "✅ No broken internal link patterns found"
+          
+      - name: Validate CSS structure
+        run: |
+          echo "Checking CSS structure..."
+          
+          # Check for key CSS classes that should exist
+          grep -q "\.container" css/styles.css || (echo "Missing .container class" && exit 1)
+          grep -q "\.main-nav" css/styles.css || (echo "Missing .main-nav class" && exit 1)
+          grep -q "\.blog-post" css/styles.css || (echo "Missing .blog-post class" && exit 1)
+          grep -q "\.cta-box" css/styles.css || (echo "Missing .cta-box class" && exit 1)
+          
+          echo "✅ CSS structure looks good"
+          
+      - name: Site validation complete
+        run: |
+          echo "🎉 Site validation passed!"
+          echo "Site structure is valid and ready for deployment"

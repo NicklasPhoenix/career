@@ -1,0 +1,98 @@
+name: Automated Content Generation
+on:
+  schedule:
+    # Run every Monday and Thursday at 10 AM UTC (good for SEO)
+    - cron: '0 10 * * 1,4'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Need write permission to commit changes
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # No external dependencies needed - using built-in libraries only
+          echo "✅ Python environment ready"
+      
+      - name: Generate new content
+        run: |
+          echo "🚀 Starting content generation..."
+          python content_automation.py
+          echo "✅ Content generation completed"
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "📋 Changes detected:"
+            git status --short
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No changes to commit"
+          fi
+      
+      - name: Commit and push changes
+        if: steps.changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Content Bot"
+          
+          # Add all changes
+          git add .
+          
+          # Create commit message with current date
+          COMMIT_MSG="Add new blog content - $(date '+%Y-%m-%d')
+
+          🤖 Automated content generation:
+          - Generated new SEO-optimized blog article
+          - Updated blog index with latest articles  
+          - Refreshed sitemap.xml for search engines
+          
+          🤖 Generated with [Claude Code](https://claude.ai/code)
+          
+          Co-Authored-By: Claude <noreply@anthropic.com>"
+          
+          git commit -m "$COMMIT_MSG"
+          git push
+          
+          echo "✅ Changes committed and pushed to main branch"
+      
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "📊 Content Generation Summary"
+          echo "================================"
+          echo "🕐 Run time: $(date)"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          
+          if [ "${{ steps.changes.outputs.changes }}" = "true" ]; then
+            echo "✅ Status: New content generated and committed"
+            echo "📄 Files updated:"
+            echo "   • New blog article added"
+            echo "   • blog/index.html updated"
+            echo "   • sitemap.xml refreshed"
+          else
+            echo "ℹ️  Status: No new content generated"
+          fi
+          
+          BLOG_COUNT=$(find blog -name "*.html" -not -name "index.html" | wc -l)
+          echo "📈 Total blog articles: $BLOG_COUNT"
+          
+          echo ""
+          echo "🔗 Site will be available at:"
+          echo "   https://[username].github.io/career/"

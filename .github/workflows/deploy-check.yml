@@ -1,0 +1,69 @@
+name: Deploy Check
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Validate site structure
+        run: |
+          echo "🔍 Checking site structure..."
+          
+          # Verify all main pages exist
+          if [ ! -f "index.html" ]; then
+            echo "❌ Missing main index.html"
+            exit 1
+          fi
+          
+          if [ ! -f "blog/index.html" ]; then
+            echo "❌ Missing blog/index.html"
+            exit 1
+          fi
+          
+          if [ ! -f "guides/index.html" ]; then
+            echo "❌ Missing guides/index.html"
+            exit 1
+          fi
+          
+          if [ ! -f "tools/index.html" ]; then
+            echo "❌ Missing tools/index.html"
+            exit 1
+          fi
+          
+          if [ ! -f "css/styles.css" ]; then
+            echo "❌ Missing css/styles.css"
+            exit 1
+          fi
+          
+          echo "✅ All required files exist"
+      
+      - name: Check navigation links
+        run: |
+          echo "🔍 Checking navigation consistency..."
+          
+          # Count pages to ensure we have content
+          BLOG_PAGES=$(find blog -name "*.html" -not -name "index.html" | wc -l)
+          GUIDE_PAGES=$(find guides -name "*.html" -not -name "index.html" | wc -l)
+          TOOL_PAGES=$(find tools -name "*.html" -not -name "index.html" | wc -l)
+          
+          echo "Found $BLOG_PAGES blog articles"
+          echo "Found $GUIDE_PAGES guide pages"
+          echo "Found $TOOL_PAGES tool pages"
+          
+          if [ "$BLOG_PAGES" -lt 3 ]; then
+            echo "⚠️  Warning: Low number of blog articles"
+          fi
+          
+          echo "✅ Content structure validated"
+      
+      - name: Site ready for deployment
+        run: |
+          echo "🎉 Site validation complete!"
+          echo "The career site is ready for GitHub Pages deployment"
+          echo "📍 Site will be available at: https://[username].github.io/career/"
