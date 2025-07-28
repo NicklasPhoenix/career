@@ -706,7 +706,6 @@
             if (isDemo) {
                 const demoNotice = document.createElement('div');
                 demoNotice.className = 'demo-notice';
-                demoNotice.style.cssText = 'background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;';
                 demoNotice.innerHTML = '<strong>📋 Demo Report</strong> - This is a sample report. Your actual report will be personalized based on your quiz responses.';
                 fullResultsContainer.appendChild(demoNotice);
             }
@@ -715,7 +714,6 @@
             matches.forEach((match, index) => {
                 const card = document.createElement('div');
                 card.className = 'career-card premium-card';
-                card.style.cssText = 'margin-bottom: 20px; border: 2px solid #28a745; background: #f8f9fa;';
                 
                 // Create detailed career info
                 const header = document.createElement('div');
@@ -728,7 +726,6 @@
                 const score = document.createElement('div');
                 score.className = 'match-score';
                 score.textContent = match.score + '% Match';
-                score.style.cssText = 'background: #28a745; color: white;';
                 
                 header.appendChild(title);
                 header.appendChild(score);
@@ -737,7 +734,7 @@
                 // Detailed description
                 const description = document.createElement('p');
                 description.textContent = match.data.description;
-                description.style.fontWeight = 'bold';
+                description.style.cssText = 'font-weight: 600; font-size: 1.1rem; color: var(--gray-800); margin: 1rem 0 1.5rem 0;';
                 card.appendChild(description);
                 
                 // Why it matches section
@@ -757,7 +754,7 @@
                 const details = document.createElement('div');
                 details.className = 'career-details';
                 details.innerHTML = `
-                    <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0;">
+                    <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">📈 Job Growth</div>
                             <div>${match.data.growth}</div>
@@ -782,7 +779,7 @@
                 const roadmap = document.createElement('div');
                 roadmap.innerHTML = `
                     <h4>🗺️ Your Transition Roadmap:</h4>
-                    <ol style="margin: 10px 0; padding-left: 20px;">
+                    <ol>
                         <li><strong>Months 1-2:</strong> Research the field, identify skill gaps, begin online learning</li>
                         <li><strong>Months 3-4:</strong> Take relevant courses, build portfolio projects, network with professionals</li>
                         <li><strong>Months 5-6:</strong> Update resume, optimize LinkedIn, start applying to entry-level positions</li>
@@ -810,7 +807,7 @@
             
             const actionPlan = document.createElement('div');
             actionPlan.innerHTML = `
-                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 8px;">
+                <div class="action-week week-research">
                     <h4>Week 1-2: Research & Planning</h4>
                     <ul>
                         <li>✅ Research ${topCareer.career} job descriptions on LinkedIn and Indeed</li>
@@ -820,7 +817,7 @@
                     </ul>
                 </div>
                 
-                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #fff2e8; border-radius: 8px;">
+                <div class="action-week week-skill">
                     <h4>Week 3-4: Skill Building</h4>
                     <ul>
                         <li>📚 Enroll in relevant online courses (Coursera, Udemy, LinkedIn Learning)</li>
@@ -830,7 +827,7 @@
                     </ul>
                 </div>
                 
-                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                <div class="action-week week-network">
                     <h4>Month 2: Networking & Visibility</h4>
                     <ul>
                         <li>🤝 Conduct 2-3 informational interviews</li>
@@ -840,7 +837,7 @@
                     </ul>
                 </div>
                 
-                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #f8e8ff; border-radius: 8px;">
+                <div class="action-week week-apply">
                     <h4>Month 3: Application Preparation</h4>
                     <ul>
                         <li>📝 Create a targeted resume highlighting transferable skills</li>
