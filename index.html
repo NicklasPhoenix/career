@@ -6,6 +6,23 @@
     <title>Career Path Analyzer - Find Your Perfect Career Match</title>
     <meta name="description" content="Free career path analyzer. Discover careers that match your skills, interests, and salary goals. Get a personalized career roadmap in minutes.">
     <meta name="keywords" content="career quiz, career path, career change, find career, career analyzer, job quiz">
+    <link rel="canonical" href="https://nicklasphoenix.github.io/career/">
+    
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Career Path Analyzer - Find Your Perfect Career Match">
+    <meta name="twitter:description" content="Free career path analyzer. Discover careers that match your skills, interests, and salary goals. Get a personalized career roadmap in minutes.">
+    <meta name="twitter:image" content="https://nicklasphoenix.github.io/career/images/career-analyzer-og.jpg">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://sheepernick.gumroad.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com; frame-src https://sheepernick.gumroad.com;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/career/favicon.svg">
@@ -350,6 +367,44 @@
             }, 2000);
         }
         
+        function calculateSalaryMatch(userSalary, careerSalaries) {
+            if (!userSalary || careerSalaries.includes(userSalary)) {
+                return 1.0; // Perfect match
+            }
+            
+            // Define salary ranges in order
+            const salaryRanges = ['30-50', '50-70', '70-100', '100-150', '150+'];
+            const userIndex = salaryRanges.indexOf(userSalary);
+            
+            // Find closest career salary range
+            let bestScore = 0;
+            careerSalaries.forEach(salary => {
+                const careerIndex = salaryRanges.indexOf(salary);
+                if (careerIndex !== -1) {
+                    const distance = Math.abs(userIndex - careerIndex);
+                    const score = Math.max(0, 1 - (distance * 0.25)); // 25% penalty per range away
+                    bestScore = Math.max(bestScore, score);
+                }
+            });
+            
+            return bestScore;
+        }
+        
+        function calculateExperienceMatch(userExperience, careerData) {
+            if (!userExperience) return 0.5; // Neutral if no experience provided
+            
+            // Simple experience compatibility - could be enhanced with career-specific requirements
+            const experienceMapping = {
+                '0-2': 0.8,    // Entry level - good for most careers
+                '3-5': 1.0,    // Early career - ideal for most transitions
+                '6-10': 0.9,   // Mid career - good but may be overqualified for some
+                '11-20': 0.7,  // Senior - excellent for leadership roles
+                '20+': 0.6     // Executive - may be overqualified for many roles
+            };
+            
+            return experienceMapping[userExperience] || 0.5;
+        }
+        
         function calculateMatches(profile) {
             const matches = [];
             
@@ -361,22 +416,29 @@
                 const skillMatches = profile.skills.filter(skill => 
                     data.skills.includes(skill)
                 ).length;
-                score += (skillMatches / data.skills.length) * 40;
+                // Fix: Use the maximum of user skills or career skills to avoid penalizing careers with more requirements
+                const skillScore = skillMatches / Math.max(profile.skills.length, data.skills.length);
+                score += skillScore * 40;
                 
-                // Interest matching (30% weight)
+                // Interest matching (25% weight)
                 const interestMatches = profile.interests.filter(interest => 
                     data.interests.includes(interest)
                 ).length;
-                score += (interestMatches / data.interests.length) * 30;
+                // Fix: Use same logic as skills to avoid penalizing careers
+                const interestScore = interestMatches / Math.max(profile.interests.length, data.interests.length);
+                score += interestScore * 25;
                 
-                // Salary matching (20% weight)
-                if (data.salary.includes(profile.salary)) {
-                    score += 20;
-                }
+                // Salary matching (20% weight) - graduated scoring
+                const salaryScore = calculateSalaryMatch(profile.salary, data.salary);
+                score += salaryScore * 20;
                 
-                // Environment bonus (10% weight)
+                // Experience matching (10% weight)
+                const experienceScore = calculateExperienceMatch(profile.experience, data);
+                score += experienceScore * 10;
+                
+                // Environment bonus (5% weight)
                 if (profile.environment === 'remote' || profile.environment === 'hybrid') {
-                    score += 10; // Most modern careers support remote
+                    score += 5; // Most modern careers support remote
                 }
                 
                 matches.push({
@@ -395,43 +457,81 @@
             document.getElementById('results').style.display = 'block';
             
             const resultsContainer = document.getElementById('careerResults');
-            resultsContainer.innerHTML = '';
+            resultsContainer.replaceChildren();
             
             // Show top 3 free, rest are premium
             matches.forEach((match, index) => {
                 const card = document.createElement('div');
                 card.className = 'career-card' + (index >= 3 ? ' premium' : '');
                 
+                // Create career header
+                const header = document.createElement('div');
+                header.className = 'career-header';
+                
+                const title = document.createElement('h3');
+                title.className = 'career-title';
+                title.textContent = match.career;
+                
+                const score = document.createElement('div');
+                score.className = 'match-score';
+                score.textContent = match.score + '%';
+                
+                header.appendChild(title);
+                header.appendChild(score);
+                card.appendChild(header);
+                
                 if (index < 3) {
-                    card.innerHTML = `
-                        <div class="career-header">
-                            <h3 class="career-title">${match.career}</h3>
-                            <div class="match-score">${match.score}%</div>
-                        </div>
-                        <p>${match.data.description}</p>
-                        <div class="career-details">
-                            <div class="detail-item">
-                                <div class="detail-label">Job Growth</div>
-                                <div>${match.data.growth}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Education Needed</div>
-                                <div>${match.data.education}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Transition Time</div>
-                                <div>${match.data.transition}</div>
-                            </div>
-                        </div>
-                    `;
+                    // Create description
+                    const description = document.createElement('p');
+                    description.textContent = match.data.description;
+                    card.appendChild(description);
+                    
+                    // Create career details
+                    const details = document.createElement('div');
+                    details.className = 'career-details';
+                    
+                    // Job Growth
+                    const growthItem = document.createElement('div');
+                    growthItem.className = 'detail-item';
+                    const growthLabel = document.createElement('div');
+                    growthLabel.className = 'detail-label';
+                    growthLabel.textContent = 'Job Growth';
+                    const growthValue = document.createElement('div');
+                    growthValue.textContent = match.data.growth;
+                    growthItem.appendChild(growthLabel);
+                    growthItem.appendChild(growthValue);
+                    
+                    // Education Needed
+                    const educationItem = document.createElement('div');
+                    educationItem.className = 'detail-item';
+                    const educationLabel = document.createElement('div');
+                    educationLabel.className = 'detail-label';
+                    educationLabel.textContent = 'Education Needed';
+                    const educationValue = document.createElement('div');
+                    educationValue.textContent = match.data.education;
+                    educationItem.appendChild(educationLabel);
+                    educationItem.appendChild(educationValue);
+                    
+                    // Transition Time
+                    const transitionItem = document.createElement('div');
+                    transitionItem.className = 'detail-item';
+                    const transitionLabel = document.createElement('div');
+                    transitionLabel.className = 'detail-label';
+                    transitionLabel.textContent = 'Transition Time';
+                    const transitionValue = document.createElement('div');
+                    transitionValue.textContent = match.data.transition;
+                    transitionItem.appendChild(transitionLabel);
+                    transitionItem.appendChild(transitionValue);
+                    
+                    details.appendChild(growthItem);
+                    details.appendChild(educationItem);
+                    details.appendChild(transitionItem);
+                    card.appendChild(details);
                 } else {
-                    card.innerHTML = `
-                        <div class="career-header">
-                            <h3 class="career-title">${match.career}</h3>
-                            <div class="match-score">${match.score}%</div>
-                        </div>
-                        <p>Unlock to see why this is a great match for you...</p>
-                    `;
+                    // Premium teaser
+                    const teaser = document.createElement('p');
+                    teaser.textContent = 'Unlock to see why this is a great match for you...';
+                    card.appendChild(teaser);
                     card.onclick = () => showPayment();
                 }
                 

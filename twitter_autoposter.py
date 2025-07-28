@@ -3,6 +3,10 @@ import random
 import os
 from datetime import datetime
 
+# WARNING: Automated promotional posting may violate Twitter's Terms of Service
+# Consider using this script manually with human oversight instead of automation
+# Review Twitter's automation rules before using: https://help.twitter.com/en/rules-and-policies/twitter-automation
+
 # Twitter API credentials
 auth = tweepy.OAuthHandler(
     os.environ['TWITTER_API_KEY'],
