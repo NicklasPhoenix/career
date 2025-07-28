@@ -196,7 +196,41 @@
             <div class="payment-form" id="paymentForm">
                 <h3>Secure Payment</h3>
                 <p>You'll be redirected to Gumroad for secure payment</p>
-                <a href="https://sheepernick.gumroad.com/l/nsqbp" class="btn" target="_blank">💳 Buy Now with Gumroad</a>
+                <a href="https://sheepernick.gumroad.com/l/nsqbp?wanted=true&return_url=https://nicklasphoenix.github.io/career/?success=1" class="btn" target="_blank" onclick="prepareForPayment()">💳 Buy Now with Gumroad</a>
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                    After payment, return to this page and click "I've Paid - Show My Report" below
+                </p>
+                <button class="btn" id="accessReportBtn" onclick="showFullReport()" style="display: none; background: #28a745; margin-top: 10px;">
+                    ✅ I've Paid - Show My Report
+                </button>
+                <button class="btn" id="demoReportBtn" onclick="showDemoReport()" style="background: #ffc107; color: #000; margin-top: 10px;">
+                    👀 Preview Full Report (Demo)
+                </button>
+            </div>
+            
+            <!-- Premium Report Section -->
+            <div class="premium-report" id="premiumReport" style="display: none;">
+                <h2>🎉 Your Complete Career Analysis Report</h2>
+                <div class="report-header">
+                    <p><strong>Generated:</strong> <span id="reportDate"></span></p>
+                    <p><strong>Based on:</strong> Your personalized quiz responses</p>
+                </div>
+                <div id="fullCareerResults"></div>
+                
+                <div class="action-plan">
+                    <h3>📋 Your 30-Day Career Transition Action Plan</h3>
+                    <div id="actionPlan"></div>
+                </div>
+                
+                <div class="bonus-resources">
+                    <h3>🎁 Bonus Resources</h3>
+                    <ul>
+                        <li><a href="#" onclick="downloadResume()">📄 Resume Template for Career Changers</a></li>
+                        <li><a href="#" onclick="downloadCoverLetter()">📝 Cover Letter Templates</a></li>
+                        <li><a href="#" onclick="downloadInterview()">🎯 Interview Prep Guide</a></li>
+                        <li><a href="#" onclick="downloadSalary()">💰 Salary Negotiation Worksheet</a></li>
+                    </ul>
+                </div>
             </div>
             
             <div class="share-buttons">
@@ -210,6 +244,39 @@
     </div>
     
     <script>
+        // Check for premium access on page load
+        window.addEventListener('load', function() {
+            checkPremiumAccess();
+        });
+        
+        function checkPremiumAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const accessCode = urlParams.get('premium');
+            const gumroadSuccess = urlParams.get('success');
+            
+            // Check if user returned from successful Gumroad payment
+            if (gumroadSuccess === '1' || accessCode === 'true') {
+                // Auto-show access button for successful payment
+                setTimeout(() => {
+                    const accessBtn = document.getElementById('accessReportBtn');
+                    if (accessBtn) {
+                        accessBtn.style.display = 'inline-block';
+                        // Show a success message
+                        showPaymentSuccess();
+                    }
+                }, 1000);
+            }
+        }
+        
+        function showPaymentSuccess() {
+            const successMessage = document.createElement('div');
+            successMessage.style.cssText = 'background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 10px 0; border: 1px solid #c3e6cb;';
+            successMessage.innerHTML = '🎉 <strong>Payment Successful!</strong> Click "Show My Report" below to access your premium content.';
+            
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.insertBefore(successMessage, paymentForm.firstChild);
+        }
+        
         // Career database with realistic matching
         const careers = {
             'Software Developer': {
@@ -552,8 +619,260 @@
             document.getElementById('paymentForm').scrollIntoView({ behavior: 'smooth' });
         }
         
+        // Store user data for premium report
+        let userProfileData = null;
+        let userCareerMatches = null;
+        
+        function prepareForPayment() {
+            // Store current user data for after payment
+            userProfileData = getCurrentUserProfile();
+            userCareerMatches = getCurrentMatches();
+            
+            // Show access button after a delay (simulate payment time)
+            setTimeout(() => {
+                document.getElementById('accessReportBtn').style.display = 'inline-block';
+            }, 30000); // Show button after 30 seconds
+            
+            // Track payment attempt
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'payment_initiated', {
+                    'event_category': 'Purchase',
+                    'event_label': 'Gumroad'
+                });
+            }
+        }
+        
+        function getCurrentUserProfile() {
+            const formData = new FormData(document.getElementById('careerForm'));
+            return {
+                skills: Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(cb => cb.value),
+                interests: Array.from(document.querySelectorAll('input[name="interests"]:checked')).map(cb => cb.value),
+                salary: formData.get('salary'),
+                experience: formData.get('experience'),
+                environment: formData.get('environment')
+            };
+        }
+        
+        function getCurrentMatches() {
+            if (userProfileData) {
+                return calculateMatches(userProfileData);
+            }
+            return null;
+        }
+        
+        function showFullReport() {
+            if (!userProfileData || !userCareerMatches) {
+                alert('Please complete the career assessment first, then make your purchase.');
+                return;
+            }
+            
+            generatePremiumReport(userProfileData, userCareerMatches);
+            
+            // Track successful access
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'premium_accessed', {
+                    'event_category': 'Purchase',
+                    'event_label': 'Full Report'
+                });
+            }
+        }
+        
+        function showDemoReport() {
+            // Show demo with sample data
+            const sampleProfile = {
+                skills: ['analytical', 'communication', 'technical'],
+                interests: ['technology', 'business'],
+                salary: '70-100',
+                experience: '3-5',
+                environment: 'hybrid'
+            };
+            
+            const sampleMatches = calculateMatches(sampleProfile);
+            generatePremiumReport(sampleProfile, sampleMatches, true);
+        }
+        
+        function generatePremiumReport(profile, matches, isDemo = false) {
+            const reportSection = document.getElementById('premiumReport');
+            const fullResultsContainer = document.getElementById('fullCareerResults');
+            const actionPlanContainer = document.getElementById('actionPlan');
+            
+            // Set report date
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+            
+            // Clear previous content
+            fullResultsContainer.replaceChildren();
+            actionPlanContainer.replaceChildren();
+            
+            if (isDemo) {
+                const demoNotice = document.createElement('div');
+                demoNotice.className = 'demo-notice';
+                demoNotice.style.cssText = 'background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;';
+                demoNotice.innerHTML = '<strong>📋 Demo Report</strong> - This is a sample report. Your actual report will be personalized based on your quiz responses.';
+                fullResultsContainer.appendChild(demoNotice);
+            }
+            
+            // Generate all career matches (not just top 3)
+            matches.forEach((match, index) => {
+                const card = document.createElement('div');
+                card.className = 'career-card premium-card';
+                card.style.cssText = 'margin-bottom: 20px; border: 2px solid #28a745; background: #f8f9fa;';
+                
+                // Create detailed career info
+                const header = document.createElement('div');
+                header.className = 'career-header';
+                
+                const title = document.createElement('h3');
+                title.className = 'career-title';
+                title.textContent = `${index + 1}. ${match.career}`;
+                
+                const score = document.createElement('div');
+                score.className = 'match-score';
+                score.textContent = match.score + '% Match';
+                score.style.cssText = 'background: #28a745; color: white;';
+                
+                header.appendChild(title);
+                header.appendChild(score);
+                card.appendChild(header);
+                
+                // Detailed description
+                const description = document.createElement('p');
+                description.textContent = match.data.description;
+                description.style.fontWeight = 'bold';
+                card.appendChild(description);
+                
+                // Why it matches section
+                const whyMatches = document.createElement('div');
+                whyMatches.innerHTML = `
+                    <h4>🎯 Why This Matches You:</h4>
+                    <ul>
+                        <li><strong>Skills Alignment:</strong> Your ${profile.skills.join(', ')} skills are valuable in this field</li>
+                        <li><strong>Interest Match:</strong> Your interests in ${profile.interests.join(', ')} align with this career</li>
+                        <li><strong>Salary Fit:</strong> Matches your target range of ${profile.salary ? '$' + profile.salary.replace('-', 'k-') + 'k' : 'your goals'}</li>
+                        <li><strong>Experience Level:</strong> Suitable for someone with ${profile.experience || 'your'} experience</li>
+                    </ul>
+                `;
+                card.appendChild(whyMatches);
+                
+                // Career details with enhanced info
+                const details = document.createElement('div');
+                details.className = 'career-details';
+                details.innerHTML = `
+                    <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0;">
+                        <div class="detail-item">
+                            <div class="detail-label">📈 Job Growth</div>
+                            <div>${match.data.growth}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">🎓 Education Needed</div>
+                            <div>${match.data.education}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">⏱️ Transition Time</div>
+                            <div>${match.data.transition}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">💼 Work Environment</div>
+                            <div>Flexible (${profile.environment} friendly)</div>
+                        </div>
+                    </div>
+                `;
+                card.appendChild(details);
+                
+                // Roadmap section
+                const roadmap = document.createElement('div');
+                roadmap.innerHTML = `
+                    <h4>🗺️ Your Transition Roadmap:</h4>
+                    <ol style="margin: 10px 0; padding-left: 20px;">
+                        <li><strong>Months 1-2:</strong> Research the field, identify skill gaps, begin online learning</li>
+                        <li><strong>Months 3-4:</strong> Take relevant courses, build portfolio projects, network with professionals</li>
+                        <li><strong>Months 5-6:</strong> Update resume, optimize LinkedIn, start applying to entry-level positions</li>
+                        <li><strong>Months 7+:</strong> Interview preparation, negotiate offers, make the transition</li>
+                    </ol>
+                `;
+                card.appendChild(roadmap);
+                
+                fullResultsContainer.appendChild(card);
+            });
+            
+            // Generate action plan
+            generateActionPlan(profile, matches, actionPlanContainer);
+            
+            // Show the report
+            reportSection.style.display = 'block';
+            reportSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide payment form
+            document.getElementById('paymentForm').style.display = 'none';
+        }
+        
+        function generateActionPlan(profile, matches, container) {
+            const topCareer = matches[0];
+            
+            const actionPlan = document.createElement('div');
+            actionPlan.innerHTML = `
+                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 8px;">
+                    <h4>Week 1-2: Research & Planning</h4>
+                    <ul>
+                        <li>✅ Research ${topCareer.career} job descriptions on LinkedIn and Indeed</li>
+                        <li>✅ Join relevant professional groups and forums</li>
+                        <li>✅ Identify 3-5 professionals in the field to informational interview</li>
+                        <li>✅ Assess current skill gaps using our skill gap analyzer</li>
+                    </ul>
+                </div>
+                
+                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #fff2e8; border-radius: 8px;">
+                    <h4>Week 3-4: Skill Building</h4>
+                    <ul>
+                        <li>📚 Enroll in relevant online courses (Coursera, Udemy, LinkedIn Learning)</li>
+                        <li>📚 Start building a portfolio showcasing your transferable skills</li>
+                        <li>📚 Read industry publications and follow thought leaders</li>
+                        <li>📚 Practice relevant skills daily for at least 1 hour</li>
+                    </ul>
+                </div>
+                
+                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                    <h4>Month 2: Networking & Visibility</h4>
+                    <ul>
+                        <li>🤝 Conduct 2-3 informational interviews</li>
+                        <li>🤝 Update LinkedIn profile with new skills and career interests</li>
+                        <li>🤝 Attend virtual industry events and webinars</li>
+                        <li>🤝 Start creating content or engaging with industry discussions</li>
+                    </ul>
+                </div>
+                
+                <div class="action-week" style="margin-bottom: 20px; padding: 15px; background: #f8e8ff; border-radius: 8px;">
+                    <h4>Month 3: Application Preparation</h4>
+                    <ul>
+                        <li>📝 Create a targeted resume highlighting transferable skills</li>
+                        <li>📝 Write a compelling cover letter template</li>
+                        <li>📝 Practice interviewing with a focus on career change narrative</li>
+                        <li>📝 Start applying to entry-level positions in ${topCareer.career}</li>
+                    </ul>
+                </div>
+            `;
+            
+            container.appendChild(actionPlan);
+        }
+        
+        // Bonus resource download functions
+        function downloadResume() {
+            alert('🎉 Resume template would be downloaded here! (This is a demo - in production, this would trigger a PDF download)');
+        }
+        
+        function downloadCoverLetter() {
+            alert('🎉 Cover letter templates would be downloaded here! (This is a demo)');
+        }
+        
+        function downloadInterview() {
+            alert('🎉 Interview prep guide would be downloaded here! (This is a demo)');
+        }
+        
+        function downloadSalary() {
+            alert('🎉 Salary negotiation worksheet would be downloaded here! (This is a demo)');
+        }
+        
         function processPayment() {
-            // Redirect to Gumroad
+            // Legacy function - redirect to Gumroad
             window.open('https://sheepernick.gumroad.com/l/nsqbp', '_blank');
         }
         
