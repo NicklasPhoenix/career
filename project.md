@@ -88,7 +88,7 @@ nicklasphoenix.github.io/career/
     <!-- Header with Navigation -->
     <header>
         <nav>
-            <a href="/">Career Analyzer Tool</a>
+            <a href="/career/">Career Analyzer Tool</a>
             <a href="/blog/">Career Advice Blog</a>
             <a href="/guides/">Free Career Guides</a>
             <a href="/tools/">Career Tools</a>
@@ -128,7 +128,7 @@ nicklasphoenix.github.io/career/
                 <div class="cta-box">
                     <h3>Not Sure Which Career Is Right for You?</h3>
                     <p>Take our free 5-minute assessment to discover careers that match your skills and interests</p>
-                    <a href="/" class="cta-button">Start Free Career Analysis →</a>
+                    <a href="/career/" class="cta-button">Start Free Career Analysis →</a>
                 </div>
             </section>
             
@@ -175,7 +175,7 @@ nicklasphoenix.github.io/career/
             <section class="final-cta">
                 <h2>Ready to Start Your Career Change?</h2>
                 <p>Get personalized career recommendations based on your unique skills and interests.</p>
-                <a href="/" class="cta-button">Take the Free Career Assessment</a>
+                <a href="/career/" class="cta-button">Take the Free Career Assessment</a>
             </section>
         </article>
         
@@ -194,7 +194,7 @@ nicklasphoenix.github.io/career/
             <section class="tool-promo">
                 <h3>Free Career Analyzer</h3>
                 <p>Discover which careers match your skills in 5 minutes</p>
-                <a href="/" class="sidebar-cta">Try It Free</a>
+                <a href="/career/" class="sidebar-cta">Try It Free</a>
             </section>
         </aside>
     </main>
