@@ -165,6 +165,46 @@ p {
     box-shadow: var(--shadow-lg);
 }
 
+/* Breadcrumb Navigation */
+.breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+    content: '/';
+    margin: 0 0.5rem;
+    color: var(--gray-400);
+    font-weight: 300;
+}
+
+.breadcrumb a {
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb li[aria-current="page"] {
+    color: var(--gray-800);
+    font-weight: 500;
+}
+
 /* Header Section */
 .site-header {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
