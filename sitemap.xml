@@ -25,10 +25,10 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://nicklasphoenix.github.io/career/guides/finance-career-guide.html</loc>
+    <loc>https://nicklasphoenix.github.io/career/tools/resume-scorer.html</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://nicklasphoenix.github.io/career/tools/skill-gap-analyzer.html</loc>
@@ -37,31 +37,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://nicklasphoenix.github.io/career/guides/tech-career-roadmap.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nicklasphoenix.github.io/career/tools/resume-scorer.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://nicklasphoenix.github.io/career/tools/salary-calculator.html</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://nicklasphoenix.github.io/career/blog/switching-careers-no-experience.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://nicklasphoenix.github.io/career/blog/tech-career-transition-guide.html</loc>
+    <loc>https://nicklasphoenix.github.io/career/guides/finance-career-guide.html</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -74,6 +56,12 @@
   </url>
   <url>
     <loc>https://nicklasphoenix.github.io/career/guides/remote-work-transition.html</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nicklasphoenix.github.io/career/guides/tech-career-roadmap.html</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -92,6 +80,18 @@
   </url>
   <url>
     <loc>https://nicklasphoenix.github.io/career/blog/2025-07-28-career-transition-from-nurse-to-digital-marketer.html</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nicklasphoenix.github.io/career/blog/switching-careers-no-experience.html</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nicklasphoenix.github.io/career/blog/tech-career-transition-guide.html</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
