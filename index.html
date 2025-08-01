@@ -236,6 +236,32 @@
                 </div>
             </div>
             
+<!-- Recent Career Insights Section -->
+            <div class="recent-insights" style="margin: 40px 0; padding: 30px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; border: 1px solid #dee2e6;">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">📚 Recent Career Insights</h3>
+                <p style="color: #6c757d; margin-bottom: 25px;">Discover the latest career advice and industry insights to accelerate your career transition.</p>
+                <div class="insights-grid" style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <div class="insight-card" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #007bff;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 16px;"><a href="/career/blog/2025-07-31-day-in-the-life-of-a-data-analyst.html" style="text-decoration: none; color: #2c3e50;">Day In The Life Of A Data Analyst</a></h4>
+                        <p style="color: #6c757d; font-size: 14px; margin: 0 0 10px 0;">Complete guide with actionable steps, salary information, and career transition tips for data analyst roles.</p>
+                        <span style="color: #007bff; font-size: 12px; font-weight: 500;">New • 9 min read</span>
+                    </div>
+                    <div class="insight-card" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #28a745;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 16px;"><a href="/career/blog/2025-07-28-career-transition-from-nurse-to-digital-marketer.html" style="text-decoration: none; color: #2c3e50;">Career Transition: Nurse to Digital Marketer</a></h4>
+                        <p style="color: #6c757d; font-size: 14px; margin: 0 0 10px 0;">Step-by-step guide for healthcare professionals transitioning to digital marketing careers.</p>
+                        <span style="color: #28a745; font-size: 12px; font-weight: 500;">New • 9 min read</span>
+                    </div>
+                    <div class="insight-card" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #ffc107;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 16px;"><a href="/career/blog/tech-career-transition-guide.html" style="text-decoration: none; color: #2c3e50;">Tech Career Transition Guide</a></h4>
+                        <p style="color: #6c757d; font-size: 14px; margin: 0 0 10px 0;">Learn proven strategies to break into tech from any background and land your first tech job.</p>
+                        <span style="color: #ffc107; font-size: 12px; font-weight: 500;">Popular • 9 min read</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 25px;">
+                    <a href="/career/blog/" class="btn" style="background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 500;">View All Career Articles →</a>
+                </div>
+            </div>
+            
             <!-- Career Resources Section -->
             <div class="career-resources-section" style="margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
                 <h3 style="color: #333; margin-bottom: 1rem;">📚 Explore More Career Resources</h3>
@@ -634,6 +660,26 @@
                     details.appendChild(growthItem);
                     details.appendChild(educationItem);
                     details.appendChild(transitionItem);
+                    
+                    // Add blog link for Data Analyst career
+                    if (match.career === 'Data Analyst') {
+                        const blogLinkItem = document.createElement('div');
+                        blogLinkItem.className = 'detail-item';
+                        const blogLabel = document.createElement('div');
+                        blogLabel.className = 'detail-label';
+                        blogLabel.textContent = '📚 Career Guide';
+                        const blogValue = document.createElement('div');
+                        const blogLink = document.createElement('a');
+                        blogLink.href = '/career/blog/2025-07-31-day-in-the-life-of-a-data-analyst.html';
+                        blogLink.textContent = 'Day in the Life of a Data Analyst';
+                        blogLink.style.color = '#007bff';
+                        blogLink.style.textDecoration = 'none';
+                        blogValue.appendChild(blogLink);
+                        blogLinkItem.appendChild(blogLabel);
+                        blogLinkItem.appendChild(blogValue);
+                        details.appendChild(blogLinkItem);
+                    }
+                    
                     card.appendChild(details);
                 } else {
                     // Premium teaser
@@ -818,7 +864,7 @@
                 
                 // Roadmap section
                 const roadmap = document.createElement('div');
-                roadmap.innerHTML = `
+                let roadmapContent = `
                     <h4>🗺️ Your Transition Roadmap:</h4>
                     <ol>
                         <li><strong>Months 1-2:</strong> Research the field, identify skill gaps, begin online learning</li>
@@ -827,6 +873,20 @@
                         <li><strong>Months 7+:</strong> Interview preparation, negotiate offers, make the transition</li>
                     </ol>
                 `;
+                
+                // Add specific resources for Data Analyst
+                if (match.career === 'Data Analyst') {
+                    roadmapContent += `
+                    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
+                        <h5 style="margin: 0 0 10px 0; color: #007bff;">📖 Recommended Reading:</h5>
+                        <a href="/career/blog/2025-07-31-day-in-the-life-of-a-data-analyst.html" style="color: #007bff; text-decoration: none; font-weight: 500;">
+                            → Day in the Life of a Data Analyst (Complete Career Guide)
+                        </a>
+                    </div>
+                    `;
+                }
+                
+                roadmap.innerHTML = roadmapContent;
                 card.appendChild(roadmap);
                 
                 fullResultsContainer.appendChild(card);
