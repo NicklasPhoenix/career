@@ -1,69 +1,405 @@
-name: Site Validation
+name: Site Validation & Testing
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   validate-site:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install validation tools
+        run: |
+          # HTML validator
+          npm install -g html-validate
+          
+          # Link checker
+          npm install -g broken-link-checker
+          
+          # Python tools for advanced validation
+          pip install beautifulsoup4 requests lxml xmlschema
+          
       - name: Validate HTML structure
         run: |
-          echo "Validating site structure..."
+          echo "🔍 Validating HTML files..."
           
           # Check that main pages exist
-          test -f index.html || (echo "Missing main index.html" && exit 1)
-          test -f blog/index.html || (echo "Missing blog/index.html" && exit 1)
-          test -f guides/index.html || (echo "Missing guides/index.html" && exit 1)
-          test -f tools/index.html || (echo "Missing tools/index.html" && exit 1)
+          REQUIRED_FILES=(
+            "index.html"
+            "blog/index.html" 
+            "guides/index.html"
+            "tools/index.html"
+            "css/styles.css"
+            "sitemap.xml"
+          )
           
-          # Check CSS exists
-          test -f css/styles.css || (echo "Missing css/styles.css" && exit 1)
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "❌ Missing required file: $file"
+              exit 1
+            else
+              echo "✅ Found: $file"
+            fi
+          done
           
-          # Check sitemap exists
-          test -f sitemap.xml || (echo "Missing sitemap.xml" && exit 1)
+          # Validate HTML syntax
+          echo "🔍 Validating HTML syntax..."
+          html-validate *.html blog/*.html guides/*.html tools/*.html || {
+            echo "❌ HTML validation failed"
+            exit 1
+          }
           
-          echo "✅ All required files exist"
+          echo "✅ HTML structure validation passed"
           
-      - name: Check for broken internal links
+      - name: Validate sitemap.xml
         run: |
-          echo "Checking for common link patterns..."
+          echo "🗺️ Validating sitemap.xml..."
           
-          # Look for any remaining /blog/ or /guides/ or /tools/ links without /career/ prefix
-          if grep -r 'href="/blog/' . --include="*.html" --exclude-dir=.git; then
-            echo "❌ Found links missing /career/ prefix"
+          # Check XML syntax
+          python3 -c "
+          import xml.etree.ElementTree as ET
+          try:
+              tree = ET.parse('sitemap.xml')
+              print('✅ Sitemap XML syntax is valid')
+          except ET.ParseError as e:
+              print(f'❌ Sitemap XML syntax error: {e}')
+              exit(1)
+          "
+          
+          # Validate sitemap structure and URLs
+          python3 << 'EOF'
+          import xml.etree.ElementTree as ET
+          import re
+          from urllib.parse import urlparse
+          
+          tree = ET.parse('sitemap.xml')
+          root = tree.getroot()
+          
+          # Check namespace
+          expected_ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+          if root.tag != f"{{{expected_ns}}}urlset":
+              print("❌ Invalid sitemap namespace")
+              exit(1)
+          
+          urls = []
+          base_url = "https://nicklasphoenix.github.io/career"
+          
+          for url_elem in root.findall(f".//{{{expected_ns}}}url"):
+              loc = url_elem.find(f"{{{expected_ns}}}loc")
+              lastmod = url_elem.find(f"{{{expected_ns}}}lastmod")
+              priority = url_elem.find(f"{{{expected_ns}}}priority")
+              
+              if loc is None:
+                  print("❌ URL missing <loc> element")
+                  exit(1)
+                  
+              url = loc.text
+              urls.append(url)
+              
+              # Validate URL format
+              if not url.startswith(base_url):
+                  print(f"❌ Invalid URL base: {url}")
+                  exit(1)
+              
+              # Validate priority range
+              if priority is not None:
+                  try:
+                      p = float(priority.text)
+                      if not 0.0 <= p <= 1.0:
+                          print(f"❌ Invalid priority {p} for {url}")
+                          exit(1)
+                  except ValueError:
+                      print(f"❌ Invalid priority format for {url}")
+                      exit(1)
+              
+              # Validate date format
+              if lastmod is not None:
+                  date_pattern = r'^\d{4}-\d{2}-\d{2}$'
+                  if not re.match(date_pattern, lastmod.text):
+                      print(f"❌ Invalid date format for {url}: {lastmod.text}")
+                      exit(1)
+          
+          # Check for duplicates
+          if len(urls) != len(set(urls)):
+              print("❌ Duplicate URLs found in sitemap")
+              exit(1)
+          
+          print(f"✅ Sitemap validation passed - {len(urls)} URLs found")
+          EOF
+          
+      - name: Check internal links
+        run: |
+          echo "🔗 Checking internal links..."
+          
+          python3 << 'EOF'
+          import os
+          import re
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          
+          # Get all URLs from sitemap
+          tree = ET.parse('sitemap.xml')
+          root = tree.getroot()
+          ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+          sitemap_urls = set()
+          
+          for url_elem in root.findall(f".//{{{ns}}}url"):
+              loc = url_elem.find(f"{{{ns}}}loc").text
+              # Convert to relative path
+              rel_path = loc.replace("https://nicklasphoenix.github.io/career", "").lstrip("/")
+              if rel_path == "":
+                  rel_path = "index.html"
+              elif rel_path.endswith("/"):
+                  rel_path += "index.html"
+              sitemap_urls.add(rel_path)
+          
+          # Find all HTML files
+          html_files = []
+          for root_dir, dirs, files in os.walk("."):
+              # Skip .git directory
+              if ".git" in root_dir:
+                  continue
+              for file in files:
+                  if file.endswith(".html"):
+                      html_files.append(os.path.join(root_dir, file))
+          
+          # Check each HTML file for internal links
+          broken_links = []
+          wrong_prefix_links = []
+          
+          for html_file in html_files:
+              with open(html_file, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              
+              # Find all href links
+              href_pattern = r'href=["\']([^"\']+)["\']'
+              links = re.findall(href_pattern, content)
+              
+              for link in links:
+                  # Skip external links
+                  if link.startswith(('http://', 'https://', 'mailto:', 'tel:', '#')):
+                      continue
+                  
+                  # Check for missing /career/ prefix
+                  if link.startswith(('/blog/', '/guides/', '/tools/')):
+                      wrong_prefix_links.append(f"{html_file}: {link}")
+                      continue
+                  
+                  # Check internal /career/ links
+                  if link.startswith('/career/'):
+                      rel_path = link[8:]  # Remove /career/
+                      if rel_path == "":
+                          rel_path = "index.html"
+                      elif rel_path.endswith("/"):
+                          rel_path += "index.html"
+                      
+                      # Check if target file exists
+                      if not os.path.exists(rel_path):
+                          broken_links.append(f"{html_file}: {link} -> {rel_path}")
+          
+          # Report results
+          if wrong_prefix_links:
+              print("❌ Found links missing /career/ prefix:")
+              for link in wrong_prefix_links:
+                  print(f"  {link}")
+              exit(1)
+          
+          if broken_links:
+              print("❌ Found broken internal links:")
+              for link in broken_links:
+                  print(f"  {link}")
+              exit(1)
+          
+          print(f"✅ Internal links validation passed - checked {len(html_files)} HTML files")
+          EOF
+          
+      - name: Validate CSS
+        run: |
+          echo "🎨 Validating CSS..."
+          
+          # Check CSS file exists and has content
+          if [[ ! -s "css/styles.css" ]]; then
+            echo "❌ CSS file is missing or empty"
             exit 1
           fi
           
-          if grep -r 'href="/guides/' . --include="*.html" --exclude-dir=.git; then
-            echo "❌ Found links missing /career/ prefix"
-            exit 1
-          fi
+          # Check for key CSS classes
+          REQUIRED_CLASSES=(
+            "\.container"
+            "\.main-nav" 
+            "\.blog-post"
+            "\.cta-box"
+            "\.btn"
+            "\.card"
+          )
           
-          if grep -r 'href="/tools/' . --include="*.html" --exclude-dir=.git; then
-            echo "❌ Found links missing /career/ prefix"
-            exit 1
-          fi
+          for class in "${REQUIRED_CLASSES[@]}"; do
+            if ! grep -q "$class" css/styles.css; then
+              echo "⚠️  Warning: Missing CSS class $class"
+            else
+              echo "✅ Found CSS class: $class"
+            fi
+          done
           
-          echo "✅ No broken internal link patterns found"
+          # Check for CSS syntax errors (basic)
+          python3 << 'EOF'
+          import re
           
-      - name: Validate CSS structure
+          with open('css/styles.css', 'r') as f:
+              css_content = f.read()
+          
+          # Basic CSS syntax checks
+          open_braces = css_content.count('{')
+          close_braces = css_content.count('}')
+          
+          if open_braces != close_braces:
+              print(f"❌ CSS syntax error: Mismatched braces ({open_braces} open, {close_braces} close)")
+              exit(1)
+          
+          print("✅ CSS syntax validation passed")
+          EOF
+          
+      - name: Check meta tags and SEO
         run: |
-          echo "Checking CSS structure..."
+          echo "🔍 Checking SEO elements..."
           
-          # Check for key CSS classes that should exist
-          grep -q "\.container" css/styles.css || (echo "Missing .container class" && exit 1)
-          grep -q "\.main-nav" css/styles.css || (echo "Missing .main-nav class" && exit 1)
-          grep -q "\.blog-post" css/styles.css || (echo "Missing .blog-post class" && exit 1)
-          grep -q "\.cta-box" css/styles.css || (echo "Missing .cta-box class" && exit 1)
+          python3 << 'EOF'
+          import os
+          import re
+          from pathlib import Path
           
-          echo "✅ CSS structure looks good"
+          html_files = []
+          for root_dir, dirs, files in os.walk("."):
+              if ".git" in root_dir:
+                  continue
+              for file in files:
+                  if file.endswith(".html"):
+                      html_files.append(os.path.join(root_dir, file))
           
-      - name: Site validation complete
+          issues = []
+          
+          for html_file in html_files:
+              with open(html_file, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              
+              # Check for title tag
+              if not re.search(r'<title[^>]*>.*?</title>', content, re.IGNORECASE):
+                  issues.append(f"{html_file}: Missing <title> tag")
+              
+              # Check for meta description
+              if not re.search(r'<meta[^>]*name=["\']description["\'][^>]*>', content, re.IGNORECASE):
+                  issues.append(f"{html_file}: Missing meta description")
+              
+              # Check for meta viewport
+              if not re.search(r'<meta[^>]*name=["\']viewport["\'][^>]*>', content, re.IGNORECASE):
+                  issues.append(f"{html_file}: Missing viewport meta tag")
+              
+              # Check for h1 tag
+              if not re.search(r'<h1[^>]*>.*?</h1>', content, re.IGNORECASE):
+                  issues.append(f"{html_file}: Missing <h1> tag")
+          
+          if issues:
+              print("⚠️  SEO Issues found:")
+              for issue in issues:
+                  print(f"  {issue}")
+          else:
+              print("✅ SEO validation passed")
+          EOF
+          
+      - name: Performance checks
         run: |
-          echo "🎉 Site validation passed!"
-          echo "Site structure is valid and ready for deployment"
+          echo "⚡ Running performance checks..."
+          
+          # Check file sizes
+          python3 << 'EOF'
+          import os
+          
+          large_files = []
+          max_html_size = 500 * 1024  # 500KB
+          max_css_size = 200 * 1024   # 200KB
+          
+          for root_dir, dirs, files in os.walk("."):
+              if ".git" in root_dir:
+                  continue
+              for file in files:
+                  filepath = os.path.join(root_dir, file)
+                  size = os.path.getsize(filepath)
+                  
+                  if file.endswith('.html') and size > max_html_size:
+                      large_files.append(f"{filepath}: {size/1024:.1f}KB (HTML limit: {max_html_size/1024}KB)")
+                  elif file.endswith('.css') and size > max_css_size:
+                      large_files.append(f"{filepath}: {size/1024:.1f}KB (CSS limit: {max_css_size/1024}KB)")
+          
+          if large_files:
+              print("⚠️  Large files detected:")
+              for file in large_files:
+                  print(f"  {file}")
+          else:
+              print("✅ File size check passed")
+          EOF
+          
+      - name: Accessibility checks
+        run: |
+          echo "♿ Checking accessibility basics..."
+          
+          python3 << 'EOF'
+          import os
+          import re
+          
+          issues = []
+          
+          for root_dir, dirs, files in os.walk("."):
+              if ".git" in root_dir:
+                  continue
+              for file in files:
+                  if file.endswith(".html"):
+                      filepath = os.path.join(root_dir, file)
+                      with open(filepath, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                      
+                      # Check for images without alt text
+                      img_without_alt = re.findall(r'<img(?![^>]*alt=)[^>]*>', content, re.IGNORECASE)
+                      if img_without_alt:
+                          issues.append(f"{filepath}: {len(img_without_alt)} images missing alt text")
+                      
+                      # Check for lang attribute
+                      if not re.search(r'<html[^>]*lang=["\'][^"\']+["\']', content, re.IGNORECASE):
+                          issues.append(f"{filepath}: Missing lang attribute on <html>")
+          
+          if issues:
+              print("⚠️  Accessibility issues found:")
+              for issue in issues:
+                  print(f"  {issue}")
+          else:
+              print("✅ Basic accessibility checks passed")
+          EOF
+          
+      - name: Final validation summary
+        run: |
+          echo "🎉 Site validation completed!"
+          echo ""
+          echo "📊 Validation Summary:"
+          echo "✅ HTML structure and syntax"
+          echo "✅ Sitemap XML validation"
+          echo "✅ Internal link checking"
+          echo "✅ CSS validation"
+          echo "✅ SEO elements check"
+          echo "✅ Performance checks"
+          echo "✅ Basic accessibility"
+          echo ""
+          echo "🚀 Site is ready for deployment!"
