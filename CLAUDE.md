@@ -20,17 +20,19 @@ git push origin main
 
 ### Content Generation (Python Automation)
 ```bash
-# Generate new blog content
-python generate_content.py
+# Full content automation workflow (generates post, updates index, updates sitemap)
+python content_automation.py
 
-# Post to Reddit (requires API credentials)
-python reddit_autoposter.py
+# Individual commands
+python generate_content.py          # Generate new blog content
+python update_blog_index.py         # Update blog/index.html with new articles
+python update_sitemap.py            # Refresh sitemap.xml with all pages
 
-# Post to Twitter/X (requires API credentials)
-python twitter_autoposter.py
+# Social media automation (requires API credentials)
+python twitter_autoposter.py        # Post to Twitter/X
+python email_automation.py          # Send automated emails
 
-# Send automated emails (requires email service setup)
-python email_automation.py
+# Note: Reddit and Quora automation are disabled (.DISABLED files)
 ```
 
 ### Development Server
@@ -60,11 +62,14 @@ npx serve .
 - **`robots.txt`**: SEO crawler directives
 
 ### Automation Scripts
+- **`content_automation.py`**: Master automation script (generates content + updates indexes)
 - **`generate_content.py`**: AI-powered blog post generation
-- **`reddit_autoposter.py`**: Automated Reddit posting with rate limiting
+- **`update_blog_index.py`**: Maintains blog/index.html with latest articles
+- **`update_sitemap.py`**: Automatically updates sitemap.xml with all site pages
 - **`twitter_autoposter.py`**: Twitter/X automation for content promotion
-- **`quora_responder.py`**: Quora answer automation (Selenium-based)
 - **`email_automation.py`**: Email sequence automation
+- **`reddit_autoposter.py.DISABLED`**: Reddit posting (disabled)
+- **`quora_responder.py.DISABLED`**: Quora automation (disabled)
 
 ## Key Design Patterns
 
@@ -89,6 +94,24 @@ Career data is stored in a JavaScript object with properties for skills, interes
 - Open Graph tags for social sharing
 - Canonical URLs with `/career/` prefix for GitHub Pages
 - Internal linking strategy between blog, guides, and tools
+
+### CSS Architecture Pattern
+**CRITICAL**: All subpages (blog, guides, tools) must use the container wrapper:
+```html
+<body>
+    <div class="container">
+        <!-- All page content goes here -->
+    </div>
+</body>
+```
+The `.container` class provides essential centering and padding:
+```css
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+```
 
 ## Content Generation Strategy
 
@@ -118,19 +141,25 @@ The content generator creates articles around high-traffic keywords:
 - Hashtag rotation for different career topics
 - Scheduled posting during peak engagement times
 
-## GitHub Pages Configuration
+## Deployment Configuration
 
-### URL Structure
-All internal links use `/career/` prefix for proper GitHub Pages routing:
-- Main tool: `/career/`
-- Blog: `/career/blog/`
-- Guides: `/career/guides/`
-- Tools: `/career/tools/`
+### Vercel Deployment (Current)
+All paths configured for root domain deployment:
+- CSS: `/css/styles.css`
+- Favicon: `/favicon.svg`, `/favicon.ico`
+- Internal links: `/`, `/blog/`, `/guides/`, `/tools/`
+- Static assets served from root
+
+### GitHub Pages (Alternative)
+For GitHub Pages deployment, paths need `/career/` prefix:
+- CSS: `/career/css/styles.css`
+- Internal links: `/career/`, `/career/blog/`, etc.
+- Use find/replace to switch deployment targets
 
 ### Deployment Notes
-- Static site automatically deploys on push to main branch
-- CSS and JS paths use relative links with `/career/` prefix
-- No build process required - pure HTML/CSS/JS
+- Static site - no build process required
+- Pure HTML/CSS/JS architecture
+- Automatic deployment on push to main (Vercel)
 
 ## Analytics and Tracking
 
