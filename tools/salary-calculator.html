@@ -17,32 +17,75 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Article",
+      "@type": ["Article", "WebApplication"],
       "headline": "Salary Calculator: Estimate Your Earnings by Career",
+      "description": "Interactive salary calculator that estimates career earnings based on job title, experience level, location, and company size. Compare salaries across industries and positions.",
       "datePublished": "2025-01-25",
-      "dateModified": "2025-01-25",
+      "dateModified": "2025-08-01",
       "author": {
         "@type": "Person",
-        "name": "Your Name",
-        "url": "https://nicklasphoenix.github.io/career/about"
+        "name": "Career Analyzer Team",
+        "url": "https://nicklasphoenix.github.io/career/"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Career Analyzer",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://nicklasphoenix.github.io/career/logo.png"
+          "url": "https://nicklasphoenix.github.io/career/favicon.svg"
         }
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://nicklasphoenix.github.io/career/tools/salary-calculator.html"
-      }
+      },
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Location-based salary estimates",
+        "Experience level adjustments", 
+        "Company size considerations",
+        "Industry-specific data",
+        "Annual, monthly, and hourly breakdowns"
+      ]
+    }
+    </script>
+    
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://nicklasphoenix.github.io/career/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Career Tools",
+          "item": "https://nicklasphoenix.github.io/career/tools/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Salary Calculator",
+          "item": "https://nicklasphoenix.github.io/career/tools/salary-calculator.html"
+        }
+      ]
     }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/career/css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MYK51P2BNR"></script>
@@ -57,6 +100,15 @@
 <body>
     <div class="container">
         <header>
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <ol>
+                    <li><a href="/career/">Home</a></li>
+                    <li><a href="/career/tools/">Career Tools</a></li>
+                    <li aria-current="page">Salary Calculator</li>
+                </ol>
+            </nav>
+            
             <nav class="main-nav">
                 <a href="/career/">Career Analyzer Tool</a>
                 <a href="/career/blog/">Career Advice Blog</a>
@@ -73,6 +125,8 @@
                 <!-- Introduction -->
                 <section class="intro">
                     <p>Calculate your potential salary in different careers based on experience level, location, and industry. Get accurate salary estimates to help you make informed career decisions and negotiate better compensation.</p>
+                    
+                    <p>Our <a href="/career/">career analyzer tool</a> can help you identify the best-paying careers that match your skills and interests. Use this salary calculator in conjunction with our <a href="/career/tools/skill-gap-analyzer.html">skill gap analyzer</a> to plan your career advancement strategy.</p>
                     
                     <div class="features-grid">
                         <div class="feature-card">
@@ -230,19 +284,19 @@
                     <div class="tips-grid">
                         <div class="tip-card">
                             <h3>🔍 Research Market Rates</h3>
-                            <p>Use multiple sources to understand salary ranges for your role and location.</p>
+                            <p>Use multiple sources to understand salary ranges for your role and location. Our <a href="/career/blog/highest-paying-remote-careers.html">guide to high-paying remote careers</a> provides additional salary insights.</p>
                         </div>
                         <div class="tip-card">
                             <h3>🎯 Highlight Your Value</h3>
-                            <p>Quantify your achievements and impact to justify higher compensation.</p>
+                            <p>Quantify your achievements and impact to justify higher compensation. Learn how to showcase your value with our <a href="/career/tools/resume-scorer.html">resume scorer tool</a>.</p>
                         </div>
                         <div class="tip-card">
                             <h3>📅 Time It Right</h3>
-                            <p>Negotiate during performance reviews or when taking on new responsibilities.</p>
+                            <p>Negotiate during performance reviews or when taking on new responsibilities. Check our <a href="/career/blog/career-change-at-30.html">career change guide</a> for transition strategies.</p>
                         </div>
                         <div class="tip-card">
                             <h3>💼 Consider Total Package</h3>
-                            <p>Factor in benefits, stock options, and other perks beyond base salary.</p>
+                            <p>Factor in benefits, stock options, and other perks beyond base salary. Explore our <a href="/career/guides/">career guides</a> for comprehensive compensation advice.</p>
                         </div>
                     </div>
                 </section>
