@@ -1,69 +1,340 @@
-name: Deploy Check
+name: Deploy Check & Site Health
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    # Run health check daily at 6 AM UTC
+    - cron: '0 6 * * *'
 
 jobs:
-  check-site:
+  pre-deploy-validation:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
-      - name: Validate site structure
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
         run: |
-          echo "🔍 Checking site structure..."
+          pip install requests beautifulsoup4 lxml
           
-          # Verify all main pages exist
-          if [ ! -f "index.html" ]; then
-            echo "❌ Missing main index.html"
-            exit 1
-          fi
-          
-          if [ ! -f "blog/index.html" ]; then
-            echo "❌ Missing blog/index.html"
-            exit 1
-          fi
-          
-          if [ ! -f "guides/index.html" ]; then
-            echo "❌ Missing guides/index.html"
-            exit 1
-          fi
-          
-          if [ ! -f "tools/index.html" ]; then
-            echo "❌ Missing tools/index.html"
-            exit 1
-          fi
-          
-          if [ ! -f "css/styles.css" ]; then
-            echo "❌ Missing css/styles.css"
-            exit 1
-          fi
-          
-          echo "✅ All required files exist"
-      
-      - name: Check navigation links
+      - name: Pre-deployment structure check
         run: |
-          echo "🔍 Checking navigation consistency..."
+          echo "🔍 Pre-deployment validation..."
           
-          # Count pages to ensure we have content
-          BLOG_PAGES=$(find blog -name "*.html" -not -name "index.html" | wc -l)
-          GUIDE_PAGES=$(find guides -name "*.html" -not -name "index.html" | wc -l)
-          TOOL_PAGES=$(find tools -name "*.html" -not -name "index.html" | wc -l)
+          # Core structure validation
+          REQUIRED_FILES=(
+            "index.html"
+            "blog/index.html"
+            "guides/index.html" 
+            "tools/index.html"
+            "css/styles.css"
+            "sitemap.xml"
+          )
           
-          echo "Found $BLOG_PAGES blog articles"
-          echo "Found $GUIDE_PAGES guide pages"
-          echo "Found $TOOL_PAGES tool pages"
+          MISSING_FILES=()
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              MISSING_FILES+=("$file")
+            fi
+          done
           
-          if [ "$BLOG_PAGES" -lt 3 ]; then
-            echo "⚠️  Warning: Low number of blog articles"
+          if [[ ${#MISSING_FILES[@]} -gt 0 ]]; then
+            echo "❌ Missing critical files:"
+            printf '  %s\n' "${MISSING_FILES[@]}"
+            exit 1
           fi
           
-          echo "✅ Content structure validated"
-      
-      - name: Site ready for deployment
+          echo "✅ All critical files present"
+          
+      - name: Content quality check
         run: |
-          echo "🎉 Site validation complete!"
-          echo "The career site is ready for GitHub Pages deployment"
-          echo "📍 Site will be available at: https://[username].github.io/career/"
+          echo "📝 Checking content quality..."
+          
+          python3 << 'EOF'
+          import os
+          import re
+          from pathlib import Path
+          
+          # Count content by type
+          blog_posts = len([f for f in os.listdir('blog') if f.endswith('.html') and f != 'index.html'])
+          guide_pages = len([f for f in os.listdir('guides') if f.endswith('.html') and f != 'index.html'])
+          tool_pages = len([f for f in os.listdir('tools') if f.endswith('.html') and f != 'index.html'])
+          
+          print(f"📊 Content inventory:")
+          print(f"  Blog posts: {blog_posts}")
+          print(f"  Guide pages: {guide_pages}")
+          print(f"  Tool pages: {tool_pages}")
+          print(f"  Total content pages: {blog_posts + guide_pages + tool_pages}")
+          
+          # Quality thresholds
+          min_blog_posts = 5
+          min_guide_pages = 3
+          min_tool_pages = 2
+          
+          issues = []
+          if blog_posts < min_blog_posts:
+              issues.append(f"Low blog content: {blog_posts}/{min_blog_posts}")
+          if guide_pages < min_guide_pages:
+              issues.append(f"Low guide content: {guide_pages}/{min_guide_pages}")
+          if tool_pages < min_tool_pages:
+              issues.append(f"Low tool content: {tool_pages}/{min_tool_pages}")
+          
+          if issues:
+              print("⚠️  Content warnings:")
+              for issue in issues:
+                  print(f"  {issue}")
+          else:
+              print("✅ Content quality meets deployment standards")
+          
+          # Check for placeholder content
+          placeholder_patterns = [
+              r'lorem ipsum',
+              r'placeholder',
+              r'todo:',
+              r'fixme:',
+              r'xxx',
+              r'coming soon'
+          ]
+          
+          placeholder_files = []
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root:
+                  continue
+              for file in files:
+                  if file.endswith('.html'):
+                      filepath = os.path.join(root, file)
+                      with open(filepath, 'r', encoding='utf-8') as f:
+                          content = f.read().lower()
+                      
+                      for pattern in placeholder_patterns:
+                          if re.search(pattern, content):
+                              placeholder_files.append(f"{filepath}: contains '{pattern}'")
+                              break
+          
+          if placeholder_files:
+              print("⚠️  Placeholder content detected:")
+              for file in placeholder_files[:5]:  # Show first 5
+                  print(f"  {file}")
+              if len(placeholder_files) > 5:
+                  print(f"  ... and {len(placeholder_files) - 5} more")
+          
+          EOF
+          
+      - name: Deploy readiness check
+        run: |
+          echo "🚀 Deployment readiness assessment..."
+          
+          python3 << 'EOF'
+          import os
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timedelta
+          
+          # Check sitemap freshness
+          if os.path.exists('sitemap.xml'):
+              tree = ET.parse('sitemap.xml')
+              root = tree.getroot()
+              ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+              
+              urls = root.findall(f".//{{{ns}}}url")
+              total_urls = len(urls)
+              
+              # Check for recent updates
+              recent_updates = 0
+              week_ago = datetime.now() - timedelta(days=7)
+              
+              for url_elem in urls:
+                  lastmod_elem = url_elem.find(f"{{{ns}}}lastmod")
+                  if lastmod_elem is not None:
+                      try:
+                          lastmod = datetime.strptime(lastmod_elem.text, "%Y-%m-%d")
+                          if lastmod >= week_ago:
+                              recent_updates += 1
+                      except ValueError:
+                          pass
+              
+              print(f"📊 Sitemap analysis:")
+              print(f"  Total URLs: {total_urls}")
+              print(f"  Recent updates (7 days): {recent_updates}")
+              
+              if recent_updates == 0 and total_urls > 10:
+                  print("⚠️  No recent content updates detected")
+              else:
+                  print("✅ Content appears fresh")
+          
+          # Check critical path files
+          critical_paths = [
+              'index.html',
+              'css/styles.css',
+              'blog/index.html'
+          ]
+          
+          sizes = {}
+          for path in critical_paths:
+              if os.path.exists(path):
+                  size = os.path.getsize(path)
+                  sizes[path] = size
+                  print(f"  {path}: {size/1024:.1f}KB")
+          
+          # Deployment readiness score
+          score = 0
+          max_score = 100
+          
+          # File existence (40 points)
+          if all(os.path.exists(f) for f in critical_paths):
+              score += 40
+              print("✅ All critical files present (+40)")
+          
+          # Content volume (30 points)
+          blog_count = len([f for f in os.listdir('blog') if f.endswith('.html') and f != 'index.html'])
+          if blog_count >= 5:
+              score += 30
+              print("✅ Sufficient content volume (+30)")
+          elif blog_count >= 3:
+              score += 20
+              print("⚠️  Moderate content volume (+20)")
+          
+          # Recent activity (20 points)
+          if recent_updates > 0:
+              score += 20
+              print("✅ Recent content updates (+20)")
+          
+          # File sizes reasonable (10 points)
+          if sizes.get('index.html', 0) < 200*1024:  # <200KB
+              score += 10
+              print("✅ Reasonable file sizes (+10)")
+          
+          print(f"\n🎯 Deployment Readiness Score: {score}/{max_score}")
+          
+          if score >= 80:
+              print("🚀 READY FOR DEPLOYMENT")
+          elif score >= 60:
+              print("⚠️  DEPLOYMENT POSSIBLE WITH WARNINGS")
+          else:
+              print("❌ NOT READY FOR DEPLOYMENT")
+              exit(1)
+          EOF
+
+  post-deploy-health-check:
+    runs-on: ubuntu-latest
+    needs: pre-deploy-validation
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Wait for GitHub Pages deployment
+        run: |
+          echo "⏳ Waiting for GitHub Pages to deploy..."
+          sleep 60  # Give GitHub Pages time to deploy
+          
+      - name: Live site health check
+        run: |
+          echo "🌐 Checking live site health..."
+          
+          SITE_URL="https://nicklasphoenix.github.io/career"
+          
+          python3 << EOF
+          import requests
+          import time
+          from urllib.parse import urljoin
+          
+          site_url = "$SITE_URL"
+          
+          # Key pages to check
+          pages_to_check = [
+              "",  # Homepage
+              "/blog/",
+              "/guides/",
+              "/tools/",
+              "/sitemap.xml"
+          ]
+          
+          print(f"🔍 Checking {site_url}")
+          
+          all_good = True
+          for page in pages_to_check:
+              url = urljoin(site_url, page)
+              try:
+                  response = requests.get(url, timeout=10)
+                  status = response.status_code
+                  
+                  if status == 200:
+                      print(f"✅ {url} - {status}")
+                  elif status == 404:
+                      print(f"❌ {url} - {status} NOT FOUND")
+                      all_good = False
+                  else:
+                      print(f"⚠️  {url} - {status}")
+                      
+              except requests.RequestException as e:
+                  print(f"❌ {url} - Connection failed: {e}")
+                  all_good = False
+              
+              time.sleep(1)  # Be nice to GitHub Pages
+          
+          if all_good:
+              print("\n🎉 All critical pages are accessible!")
+          else:
+              print("\n❌ Some pages are not accessible")
+              exit(1)
+          EOF
+          
+      - name: SEO & Performance spot check
+        run: |
+          echo "🔍 Quick SEO & Performance check..."
+          
+          SITE_URL="https://nicklasphoenix.github.io/career"
+          
+          python3 << EOF
+          import requests
+          import re
+          
+          site_url = "$SITE_URL"
+          
+          try:
+              response = requests.get(site_url, timeout=15)
+              content = response.text
+              
+              # Basic SEO checks
+              checks = {
+                  "Has title tag": bool(re.search(r'<title[^>]*>.*?</title>', content, re.IGNORECASE)),
+                  "Has meta description": bool(re.search(r'<meta[^>]*name=["\']description["\']', content, re.IGNORECASE)),
+                  "Has h1 tag": bool(re.search(r'<h1[^>]*>.*?</h1>', content, re.IGNORECASE)),
+                  "Has viewport meta": bool(re.search(r'<meta[^>]*name=["\']viewport["\']', content, re.IGNORECASE)),
+                  "Response time < 3s": response.elapsed.total_seconds() < 3.0
+              }
+              
+              print("📊 Live site checks:")
+              for check, passed in checks.items():
+                  status = "✅" if passed else "❌"
+                  print(f"  {status} {check}")
+              
+              # Check response size
+              content_size = len(content.encode('utf-8'))
+              print(f"  📏 Homepage size: {content_size/1024:.1f}KB")
+              
+              if content_size > 500*1024:  # >500KB
+                  print("  ⚠️  Large homepage size")
+              
+              print(f"  ⏱️  Response time: {response.elapsed.total_seconds():.2f}s")
+              
+          except Exception as e:
+              print(f"❌ Health check failed: {e}")
+              exit(1)
+          EOF
+          
+      - name: Deployment success notification
+        run: |
+          echo "🎉 DEPLOYMENT SUCCESSFUL!"
+          echo ""
+          echo "🌐 Site URL: https://nicklasphoenix.github.io/career"
+          echo "📊 All health checks passed"
+          echo "🚀 Site is live and functioning properly"
+          echo ""
+          echo "Next steps:"
+          echo "• Monitor site performance"
+          echo "• Check Google Search Console for indexing"
+          echo "• Review analytics for traffic patterns"
