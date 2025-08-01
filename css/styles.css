@@ -1776,4 +1776,16 @@ main article ol li {
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
+
+/* Career Resources Section Styling */
+.career-resources-section a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #007bff !important;
+}
+
+.career-resources-section a:last-child:hover {
+    border-color: #28a745 !important;
+    background: #f8fff9 !important;
+}
 .mt-4 { margin-top: 2rem; }
