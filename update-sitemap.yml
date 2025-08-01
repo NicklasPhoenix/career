@@ -1,0 +1,45 @@
+name: Update Sitemap
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'blog/*.html'
+      - 'guides/*.html' 
+      - 'tools/*.html'
+      - '*.html'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Regenerate sitemap
+        run: python update_sitemap.py
+        
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit sitemap updates
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add sitemap.xml
+          git commit -m "🗺️ Auto-update sitemap [skip ci]"
+          git push
