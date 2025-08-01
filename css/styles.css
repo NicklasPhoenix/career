@@ -165,6 +165,46 @@ p {
     box-shadow: var(--shadow-lg);
 }
 
+/* Breadcrumb Navigation */
+.breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+    content: '/';
+    margin: 0 0.5rem;
+    color: var(--gray-400);
+    font-weight: 300;
+}
+
+.breadcrumb a {
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb li[aria-current="page"] {
+    color: var(--gray-800);
+    font-weight: 500;
+}
+
 /* Header Section */
 .site-header {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -724,6 +764,66 @@ select:focus {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
     background: var(--primary-50);
+}
+
+/* FAQ Section */
+.faq {
+
+/* Career Guides CTA Section */
+.career-guides-cta {
+    background: var(--gray-50);
+    border: 2px solid var(--primary-100);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.career-guides-cta h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.career-guides-cta p {
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+}
+
+.guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.guide-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.guide-link:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.guide-link strong {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.guide-link span {
+    color: var(--gray-600);
+    font-size: 0.9rem;
 }
 
 /* FAQ Section */
@@ -1776,4 +1876,78 @@ main article ol li {
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
+/* Career Resources Section Styling */
+.career-resources-section a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #007bff !important;
+}
+.career-resources-section a:last-child:hover {
+    border-color: #28a745 !important;
+    background: #f8fff9 !important;
+}
+
 .mt-4 { margin-top: 2rem; }
+
+/* Helpful Resources Section */
+.helpful-resources {
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid var(--gray-200);
+}
+.helpful-resources h3 {
+    color: var(--gray-800);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.resource-item {
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+.resource-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+.resource-item h4 {
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+.resource-item h4 a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.resource-item h4 a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+.resource-item p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+@media (max-width: 768px) {
+    .resource-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .helpful-resources {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+    }
+}
